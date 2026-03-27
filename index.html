@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stellar Odyssey — Mission Control</title>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;overflow:hidden;font-family:'Segoe UI',system-ui,sans-serif;color:#fff;user-select:none}
+canvas{display:block;position:fixed;top:0;left:0;z-index:0}
+
+.overlay{position:fixed;top:0;left:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;z-index:100}
+.overlay.active{display:flex}
+.overlay-bg{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px)}
+.panel{position:relative;z-index:1;background:linear-gradient(135deg,rgba(12,16,36,0.97),rgba(22,12,46,0.97));border:1px solid rgba(100,140,255,0.25);border-radius:16px;padding:28px;max-width:580px;width:93%;box-shadow:0 0 60px rgba(70,100,255,0.12);max-height:90vh;overflow-y:auto}
+.panel::-webkit-scrollbar{width:5px}
+.panel::-webkit-scrollbar-thumb{background:rgba(100,140,255,0.3);border-radius:3px}
+.panel h2{color:#8bb4ff;font-size:1.32em;margin-bottom:5px;text-shadow:0 0 18px rgba(100,150,255,0.35)}
+.subtitle{color:#6a8ccc;font-size:0.83em;margin-bottom:15px}
+.question-text{color:#d0daf0;font-size:1.03em;line-height:1.55;margin-bottom:18px;padding:14px;background:rgba(255,255,255,0.035);border-radius:10px;border-left:3px solid rgba(100,150,255,0.35)}
+
+.answer-btn{display:block;width:100%;padding:12px 16px;margin-bottom:9px;border:1px solid rgba(100,140,255,0.2);border-radius:10px;background:rgba(255,255,255,0.035);color:#b0c4e8;font-size:0.94em;cursor:pointer;transition:all 0.2s;text-align:left;font-family:inherit}
+.answer-btn:hover:not(:disabled){background:rgba(100,140,255,0.14);border-color:rgba(100,140,255,0.45);color:#fff}
+.answer-btn.correct{background:rgba(40,200,80,0.22)!important;border-color:#28c850!important;color:#5eff8a!important}
+.answer-btn.wrong{background:rgba(255,50,50,0.18)!important;border-color:#ff3232!important;color:#ff7070!important}
+.answer-btn:disabled{cursor:default;opacity:0.7}
+
+.sensor-zone{padding:20px;margin:12px 0;border-radius:12px;text-align:center;background:rgba(100,80,255,0.07);border:1px dashed rgba(100,140,255,0.25)}
+.sensor-label{color:#8b9fd0;font-size:0.83em;margin-bottom:6px}
+.sensor-value{color:#8bb4ff;font-size:2.2em;font-weight:700;font-variant-numeric:tabular-nums}
+.sensor-instruction{color:#7a94c0;font-size:0.82em;margin-top:8px;line-height:1.4}
+.progress-outer{margin-top:10px;height:7px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden}
+.progress-inner{width:0%;height:100%;background:linear-gradient(90deg,#4080ff,#8bb4ff);transition:width 0.2s;border-radius:4px}
+.phone-indicator{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:0.75em;background:rgba(100,140,255,0.1);color:#6a8ccc;margin-top:8px}
+.phone-indicator.connected{background:rgba(40,200,80,0.12);color:#5eff8a}
+
+.result-msg{padding:14px;border-radius:10px;margin-top:14px;font-size:0.91em;line-height:1.5}
+.result-msg.correct{background:rgba(40,200,80,0.1);color:#5eff8a;border:1px solid rgba(40,200,80,0.25)}
+.result-msg.wrong{background:rgba(255,50,50,0.1);color:#ff7070;border:1px solid rgba(255,50,50,0.25)}
+
+.btn-primary{margin-top:14px;padding:12px 32px;border:none;border-radius:10px;background:linear-gradient(135deg,#4060cc,#6040cc);color:#fff;font-size:0.98em;cursor:pointer;transition:all 0.2s;font-family:inherit}
+.btn-primary:hover{background:linear-gradient(135deg,#5070dd,#7050dd);transform:translateY(-1px)}
+
+.hud{position:fixed;top:0;left:0;width:100%;z-index:50;display:none;justify-content:space-between;align-items:center;padding:10px 16px;background:linear-gradient(180deg,rgba(0,0,0,0.65) 0%,transparent 100%);pointer-events:none}
+.hud-item{color:#8bb4ff;font-size:0.82em;display:flex;align-items:center;gap:6px}
+.o2-outer{width:140px;height:10px;background:rgba(255,255,255,0.1);border-radius:5px;overflow:hidden}
+.o2-inner{height:100%;border-radius:5px;transition:width 0.5s,background 0.5s}
+.planet-label{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);color:rgba(130,160,255,0.5);font-size:0.73em;z-index:50;pointer-events:none;letter-spacing:2px;text-transform:uppercase}
+
+.title-screen{text-align:center}
+.title-screen h1{font-size:2.2em;background:linear-gradient(135deg,#8bb4ff,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.code-display{font-size:2.8em;font-weight:800;letter-spacing:8px;color:#fff;margin:18px 0;text-shadow:0 0 30px rgba(100,150,255,0.5)}
+.code-label{color:#6a8ccc;font-size:0.88em;margin-bottom:4px}
+.connection-status{color:#ff9040;font-size:0.9em;margin:10px 0;min-height:24px}
+.connection-status.connected{color:#5eff8a}
+
+.death-screen,.win-screen{text-align:center}
+.death-screen h2{color:#ff5555;font-size:1.7em;margin-bottom:10px}
+.win-screen h1{color:#5eff8a;font-size:1.9em;margin-bottom:10px}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div class="hud" id="hud">
+  <div class="hud-item"><span>🚀</span><span id="hudPlanet">Mercury</span></div>
+  <div class="hud-item">
+    <span>O₂</span>
+    <div class="o2-outer"><div class="o2-inner" id="o2Bar" style="width:100%;background:#5eff8a"></div></div>
+    <span id="o2Text">100%</span>
+  </div>
+  <div class="hud-item"><span>⭐</span><span id="hudScore">0</span></div>
+  <div class="hud-item" id="hudPhone" style="opacity:0.5">📱 No phone</div>
+</div>
+<div class="planet-label" id="planetLabel"></div>
+
+<!-- TITLE / PAIRING -->
+<div class="overlay active" id="titleOverlay">
+  <div class="overlay-bg"></div>
+  <div class="panel title-screen">
+    <h1>🌌 Stellar Odyssey</h1>
+    <p style="color:#6a8ccc;font-size:0.9em;margin-bottom:18px">Navigate the Solar System with Science</p>
+    <div style="color:#8899bb;font-size:0.83em;line-height:1.6;margin-bottom:20px;text-align:left">
+      Pilot your spacecraft from Mercury to Pluto answering astronomy questions at each planet.
+      Correct answers restore oxygen; wrong answers drain it.<br><br>
+      <strong style="color:#8bb4ff">📱 Phone Controller:</strong> Open the controller page on your phone and enter the code below to pair. Your phone's sensors become your spacecraft controls!<br><br>
+      <strong style="color:#c084fc">9 Planets · 27 Questions · 1 Oxygen Tank</strong>
+    </div>
+    <div class="code-label">YOUR MISSION CODE</div>
+    <div class="code-display" id="roomCode">····</div>
+    <div class="connection-status" id="connStatus">Waiting for phone connection...</div>
+    <button class="btn-primary" id="startBtn" style="padding:14px 48px;font-size:1.08em;opacity:0.4;pointer-events:none">Waiting for Phone...</button>
+    <p style="color:#5a6a8a;font-size:0.75em;margin-top:14px">You can also start without a phone — sensor questions become multiple choice.</p>
+    <button class="btn-primary" id="skipBtn" style="padding:8px 24px;font-size:0.82em;background:rgba(255,255,255,0.06);border:1px solid rgba(100,140,255,0.15);margin-top:6px">Start Without Phone</button>
+  </div>
+</div>
+
+<!-- QUESTION -->
+<div class="overlay" id="questionOverlay">
+  <div class="overlay-bg"></div>
+  <div class="panel" id="questionPanel"></div>
+</div>
+
+<!-- DEATH -->
+<div class="overlay" id="deathOverlay">
+  <div class="overlay-bg"></div>
+  <div class="panel death-screen" id="deathPanel"></div>
+</div>
+
+<!-- WIN -->
+<div class="overlay" id="winOverlay">
+  <div class="overlay-bg"></div>
+  <div class="panel win-screen" id="winPanel"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+//  PEER CONNECTION (WebRTC via PeerJS)
+// ═══════════════════════════════════════
+function generateCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+const ROOM_CODE = generateCode();
+document.getElementById('roomCode').textContent = ROOM_CODE;
+
+let peer, conn;
+let phoneConnected = false;
+const sensorData = { alpha:0, beta:0, gamma:0, accel:{x:0,y:0,z:0} };
+
+function initPeer() {
+  const peerId = 'stellar-odyssey-' + ROOM_CODE.toLowerCase();
+  peer = new Peer(peerId, { debug: 0 });
+
+  peer.on('open', () => {
+    document.getElementById('connStatus').textContent = 'Code ready — enter ' + ROOM_CODE + ' on your phone';
+  });
+
+  peer.on('connection', (c) => {
+    conn = c;
+    conn.on('open', () => {
+      phoneConnected = true;
+      document.getElementById('connStatus').textContent = '📱 Phone connected!';
+      document.getElementById('connStatus').classList.add('connected');
+      document.getElementById('startBtn').style.opacity = '1';
+      document.getElementById('startBtn').style.pointerEvents = 'auto';
+      document.getElementById('startBtn').textContent = 'Launch Mission';
+      document.getElementById('hudPhone').textContent = '📱 Connected';
+      document.getElementById('hudPhone').style.opacity = '1';
+      document.getElementById('hudPhone').style.color = '#5eff8a';
+      // send current state
+      sendToPhone({ type:'status', text:'Connected! Waiting for launch...' });
+    });
+
+    conn.on('data', (data) => {
+      if (data.type === 'sensor') {
+        sensorData.alpha = data.alpha || 0;
+        sensorData.beta = data.beta || 0;
+        sensorData.gamma = data.gamma || 0;
+        sensorData.accel = data.accel || {x:0,y:0,z:0};
+      }
+    });
+
+    conn.on('close', () => {
+      phoneConnected = false;
+      document.getElementById('hudPhone').textContent = '📱 Disconnected';
+      document.getElementById('hudPhone').style.color = '#ff6040';
+    });
+  });
+
+  peer.on('error', (err) => {
+    console.warn('Peer error:', err);
+    if (err.type === 'unavailable-id') {
+      document.getElementById('connStatus').textContent = 'Code conflict — refreshing...';
+      setTimeout(() => location.reload(), 1500);
+    }
+  });
+}
+
+function sendToPhone(msg) {
+  if (conn && conn.open) conn.send(msg);
+}
+
+initPeer();
+
+// ═══════════════════════════════════════
+//  CANVAS ENGINE
+// ═══════════════════════════════════════
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+
+const stars = [];
+for (let i = 0; i < 280; i++) stars.push({ x:Math.random()*4000-500, y:Math.random()*2000-500, r:Math.random()*1.6+0.4, b:Math.random()*0.5+0.3, speed:Math.random()*0.3+0.05 });
+
+let camX = 0, camTargetX = 0;
+
+const PLANETS = [
+  {name:"Mercury",color:"#b4aaa0",r:18,dist:100},
+  {name:"Venus",color:"#e6be64",r:24,dist:200},
+  {name:"Earth",color:"#4682e6",r:26,dist:310},
+  {name:"Mars",color:"#c85032",r:22,dist:410},
+  {name:"Jupiter",color:"#d2aa6e",r:50,dist:560},
+  {name:"Saturn",color:"#dcca82",r:42,dist:720,ring:true},
+  {name:"Uranus",color:"#8cd2dc",r:34,dist:870},
+  {name:"Neptune",color:"#3c50c8",r:32,dist:1010},
+  {name:"Pluto",color:"#b4aac8",r:14,dist:1150},
+];
+
+const SCALE = 0.9;
+const baseY = () => H * 0.52;
+const planetSeeds = PLANETS.map(() => (Math.random()-0.5)*40);
+
+let shipX = PLANETS[0].dist*SCALE-40+40, shipY = 0;
+let shipTargetX = shipX, shipTargetY = 0, shipTraveling = false;
+let engineFlicker = 0, onArrival = null;
+
+function drawShip(sx,sy) {
+  ctx.save(); ctx.translate(sx,sy);
+  engineFlicker += 0.15;
+  const eg = 0.4+Math.sin(engineFlicker*5)*0.25;
+  ctx.globalAlpha=eg; ctx.fillStyle='#4080ff';
+  ctx.beginPath(); ctx.arc(-16,0,6,0,Math.PI*2); ctx.fill();
+  ctx.globalAlpha=eg*0.4;
+  ctx.beginPath(); ctx.arc(-20,0,10,0,Math.PI*2); ctx.fill();
+  ctx.globalAlpha=1; ctx.fillStyle='#c8dcff';
+  ctx.beginPath(); ctx.moveTo(16,0); ctx.lineTo(-10,-10); ctx.lineTo(-10,10); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#8ab4ff';
+  ctx.beginPath(); ctx.moveTo(16,0); ctx.lineTo(-4,-6); ctx.lineTo(-4,6); ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+
+function drawPlanet(p,idx) {
+  const px=40+p.dist*SCALE, py=baseY()+planetSeeds[idx], sx=px-camX;
+  if(sx<-100||sx>W+100)return;
+  if(idx>0){ctx.fillStyle='rgba(50,60,90,0.3)';const pd=idx===0?0:PLANETS[idx-1].dist;for(let d=pd*SCALE;d<p.dist*SCALE;d+=10){const dx=40+d-camX;if(dx>-10&&dx<W+10)ctx.fillRect(dx,baseY()-0.5,2.5,1.5);}}
+  if(p.ring){ctx.save();ctx.strokeStyle='rgba(200,190,140,0.35)';ctx.lineWidth=6;ctx.beginPath();ctx.ellipse(sx,py,p.r*2,p.r*0.4,0,Math.PI,Math.PI*2);ctx.stroke();ctx.restore();}
+  const grd=ctx.createRadialGradient(sx,py,p.r*0.3,sx,py,p.r*2);grd.addColorStop(0,p.color+'30');grd.addColorStop(1,'transparent');ctx.fillStyle=grd;ctx.beginPath();ctx.arc(sx,py,p.r*2,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(sx,py,p.r,0,Math.PI*2);ctx.fill();
+  ctx.save();ctx.globalAlpha=0.25;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(sx-p.r*0.25,py-p.r*0.25,p.r*0.5,0,Math.PI*2);ctx.fill();ctx.restore();
+  if(p.ring){ctx.save();ctx.strokeStyle='rgba(200,190,140,0.35)';ctx.lineWidth=6;ctx.beginPath();ctx.ellipse(sx,py,p.r*2,p.r*0.4,0,0,Math.PI);ctx.stroke();ctx.restore();}
+  ctx.fillStyle='rgba(120,150,190,0.7)';ctx.font='11px monospace';ctx.textAlign='center';ctx.fillText(p.name,sx,py+p.r+16);
+}
+
+function drawSun(){
+  const sx=40-camX,t=performance.now()/1000;
+  const grd=ctx.createRadialGradient(sx,baseY(),10,sx,baseY(),90+Math.sin(t)*5);
+  grd.addColorStop(0,'rgba(255,220,80,0.6)');grd.addColorStop(0.5,'rgba(255,180,40,0.15)');grd.addColorStop(1,'transparent');
+  ctx.fillStyle=grd;ctx.beginPath();ctx.arc(sx,baseY(),95,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#ffc832';ctx.beginPath();ctx.arc(sx,baseY(),50,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='rgba(255,240,180,0.3)';ctx.beginPath();ctx.arc(sx-15,baseY()-15,22,0,Math.PI*2);ctx.fill();
+}
+
+function frame(time){
+  const dt=Math.min((time-(frame.last||time))/1000,0.05);frame.last=time;
+  ctx.clearRect(0,0,W,H);
+  const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#050510');bg.addColorStop(1,'#0a0a20');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  const t=time/1000;
+  stars.forEach(s=>{const px=0.15,sx=s.x-camX*px,wx=((sx%(W+200))+(W+200))%(W+200)-100,sy=((s.y%(H+200))+(H+200))%(H+200)-100;ctx.globalAlpha=Math.max(0.05,s.b+Math.sin(t*s.speed*6+s.x)*0.2);ctx.fillStyle='#ccdcff';ctx.beginPath();ctx.arc(wx,sy,s.r,0,Math.PI*2);ctx.fill();});
+  ctx.globalAlpha=1;
+  camX+=(camTargetX-camX)*0.04;
+  drawSun();
+  PLANETS.forEach((p,i)=>drawPlanet(p,i));
+  if(shipTraveling){const dx=shipTargetX-shipX,dy=shipTargetY-shipY,d=Math.sqrt(dx*dx+dy*dy);if(d<2){shipX=shipTargetX;shipY=shipTargetY;shipTraveling=false;if(onArrival){setTimeout(onArrival,500);onArrival=null;}}else{const spd=Math.max(80,d*1.2)*dt;shipX+=(dx/d)*spd;shipY+=(dy/d)*spd;}}
+  camTargetX=shipX-W*0.3;
+  shipY=shipY||baseY();
+  drawShip(shipX-camX,shipY);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+// ═══════════════════════════════════════
+//  GAME STATE & QUESTIONS
+// ═══════════════════════════════════════
+const STATE = { oxygen:100, score:0, currentPlanet:0, currentQuestion:0, alive:true };
+
+const PLANET_META = [
+  {topic:"Basic Astronomy Foundations",difficulty:"Easy",o2Penalty:12,pluto:false},
+  {topic:"Tools of Astronomy & Planetary Atmospheres",difficulty:"Mild",o2Penalty:14,pluto:false},
+  {topic:"Earth-Moon-Sun System",difficulty:"Mild",o2Penalty:14,pluto:false},
+  {topic:"Space Exploration & Engineering",difficulty:"Medium",o2Penalty:16,pluto:false},
+  {topic:"Gravity & Moons in Space",difficulty:"Medium",o2Penalty:16,pluto:false},
+  {topic:"Solar System Structure",difficulty:"Medium",o2Penalty:18,pluto:false},
+  {topic:"Astrophysics & Ice Giants",difficulty:"Hard",o2Penalty:22,pluto:false},
+  {topic:"Exoplanets & Astrobiology",difficulty:"Hard",o2Penalty:22,pluto:false},
+  {topic:"Ultimate Frontier",difficulty:"Extreme ☠️",o2Penalty:100,pluto:true},
+];
+
+const QUESTIONS = [
+  // Mercury
+  [
+    {type:"mc",q:"What is the closest star to Earth?",choices:["The Sun","Proxima Centauri","Sirius","Alpha Centauri A"],answer:0,explain:"The Sun is ~8 light-minutes away; Proxima Centauri is 4.24 light-years."},
+    {type:"mc",q:"Roughly how old is our Sun?",choices:["1 billion years","4.6 billion years","10 billion years","800 million years"],answer:1,explain:"The Sun formed ~4.6 billion years ago from a collapsing molecular cloud."},
+    {type:"sensor",sensor:"accelerometer",q:"Hold your device flat (screen up) for 3 sec to stabilize in zero-G. Keep Z-accel near 9.8 m/s².",threshold:{axis:"z",min:8.0,max:11.5,duration:3000},fallbackQ:"What force keeps planets in orbit around the Sun?",fallbackChoices:["Magnetism","Gravity","Centrifugal force","Dark energy"],fallbackAnswer:1,explain:"Gravity governs orbital mechanics. Accelerometers read ~9.8 m/s² from Earth's gravity."},
+  ],
+  // Venus
+  [
+    {type:"mc",q:"Which instrument disperses starlight into component wavelengths to reveal chemical composition?",choices:["Telescope","Spectrograph","Barometer","Magnetometer"],answer:1,explain:"A spectrograph splits light into a spectrum revealing absorption lines of elements."},
+    {type:"mc",q:"Venus's atmosphere is over 96% CO₂. What is its approximate surface temperature?",choices:["120°C","260°C","465°C","700°C"],answer:2,explain:"Venus's greenhouse effect makes it hotter than Mercury despite being farther from the Sun."},
+    {type:"sensor",sensor:"gyroscope",q:"Rotate your device 90° left — like adjusting a telescope. Tilt until γ ≈ 90° and hold 2 sec.",threshold:{axis:"gamma",min:60,max:120,duration:2000},fallbackQ:"What type of telescope uses mirrors to gather light?",fallbackChoices:["Refractor","Reflector","Radio","Infrared"],fallbackAnswer:1,explain:"Reflector telescopes use concave mirrors to gather and focus light."},
+  ],
+  // Earth
+  [
+    {type:"mc",q:"What primarily causes ocean tides on Earth?",choices:["Earth's rotation alone","Solar wind","Gravitational pull of Moon and Sun","Deep ocean currents"],answer:2,explain:"Tidal forces come mainly from the Moon, with the Sun contributing ~46%."},
+    {type:"mc",q:"During a total solar eclipse, which body passes between the other two?",choices:["Earth between Sun and Moon","Moon between Sun and Earth","Sun between Earth and Moon","They form a triangle"],answer:1,explain:"The Moon passes between Sun and Earth, casting its shadow on Earth."},
+    {type:"sensor",sensor:"orientation",q:"Point your device North (compass ≈ 0° ±30°) to calibrate navigation. Hold 2 sec.",threshold:{heading:0,tolerance:30,duration:2000},fallbackQ:"Earth's ~23.5° axial tilt causes which phenomenon?",fallbackChoices:["Tides","Seasons","Day/night cycles","Magnetic reversals"],fallbackAnswer:1,explain:"The 23.5° tilt causes varying sunlight through the year, creating seasons."},
+  ],
+  // Mars
+  [
+    {type:"mc",q:"Which rover carried the Ingenuity helicopter — first powered flight on another world?",choices:["Curiosity","Opportunity","Perseverance","Spirit"],answer:2,explain:"Perseverance landed Feb 2021; Ingenuity flew April 19, 2021."},
+    {type:"mc",q:"The main engineering challenge for crewed Mars missions during the 6–9 month trip is:",choices:["Fuel weight","Cosmic & solar radiation exposure","Signal delay","Food storage"],answer:1,explain:"Astronauts face prolonged radiation requiring advanced shielding solutions."},
+    {type:"sensor",sensor:"accelerometer",q:"Simulate Mars landing: tilt device nose-down (β ≈ 30–50°) like a deceleration burn. Hold 2 sec.",threshold:{axis:"beta",min:25,max:55,duration:2000},fallbackQ:"Mars surface gravity is approximately what % of Earth's?",fallbackChoices:["About 10%","About 38%","About 62%","About 85%"],fallbackAnswer:1,explain:"Mars gravity is ~3.72 m/s² — about 38% of Earth's 9.81 m/s²."},
+  ],
+  // Jupiter
+  [
+    {type:"mc",q:"Jupiter's moon Europa likely harbors:",choices:["Active surface volcanoes","A subsurface liquid water ocean","A thick oxygen atmosphere","Rare mineral deposits"],answer:1,explain:"Europa's icy crust likely covers a global saltwater ocean — prime for life."},
+    {type:"mc",q:"The Roche limit is the distance within which:",choices:["A moon's orbit circularizes","Tidal forces disintegrate a satellite","Atmosphere begins","Light can't escape"],answer:1,explain:"Inside the Roche limit, tidal forces exceed the satellite's self-gravity."},
+    {type:"mc",q:"Jupiter's Great Red Spot has been observed for approximately:",choices:["~50 years","~150 years","~350+ years","~1 billion years"],answer:2,explain:"Observed since at least 1664, the spot has been shrinking in recent decades."},
+  ],
+  // Saturn
+  [
+    {type:"mc",q:"Saturn's rings are primarily composed of:",choices:["Rock and metal","Frozen gas and plasma","Water ice and rocky debris","Liquid methane"],answer:2,explain:"Saturn's rings are ~99.9% water ice with trace rocky impurities."},
+    {type:"mc",q:"The Kuiper Belt is analogous to which inner solar system structure?",choices:["The Oort Cloud","The asteroid belt","The heliopause","Solar corona"],answer:1,explain:"Both are debris fields — asteroid belt has rocky bodies; Kuiper Belt has icy ones."},
+    {type:"sensor",sensor:"gyroscope",q:"Saturn's axial tilt is ~26.7°. Tilt your device to ~25° (β ≈ 20–35°) and hold 2 sec.",threshold:{axis:"beta",min:20,max:35,duration:2000},fallbackQ:"Enceladus and Dione's orbital resonance is:",fallbackChoices:["1:1","1:2","2:3","3:5"],fallbackAnswer:1,explain:"Enceladus orbits twice per Dione orbit (1:2). Tidal heating powers its geysers."},
+  ],
+  // Uranus
+  [
+    {type:"mc",q:"Uranus's extreme ~98° axial tilt is best explained by:",choices:["Strong solar winds","A giant impact early in history","Magnetic interactions with Neptune","Jupiter resonance"],answer:1,explain:"A collision with an Earth-sized protoplanet likely knocked Uranus onto its side."},
+    {type:"mc",q:"What makes Uranus and Neptune 'ice giants' vs 'gas giants'?",choices:["They're colder","Interiors dominated by water/ammonia/methane ices","They have solid surfaces","No magnetic fields"],answer:1,explain:"Ice giant mantles contain supercritical water–ammonia–methane under extreme pressure."},
+    {type:"sensor",sensor:"accelerometer",q:"Uranus spins on its side! Rotate device sideways (γ ≈ 60–120°) and hold 2 sec.",threshold:{axis:"gamma",min:60,max:120,duration:2000},fallbackQ:"Uranus's blue-green color comes from which gas?",fallbackChoices:["Oxygen","Methane","Nitrogen","Carbon dioxide"],fallbackAnswer:1,explain:"Methane absorbs red wavelengths, reflecting blue-green light."},
+  ],
+  // Neptune
+  [
+    {type:"mc",q:"The habitable zone is defined as where:",choices:["Planets form rings","Liquid water can exist on a surface","Magnetic fields are strongest","Solar wind is weakest"],answer:1,explain:"The habitable zone allows temperatures for liquid surface water."},
+    {type:"mc",q:"The Drake Equation estimates:",choices:["Age of universe","Communicative civilizations in our galaxy","Mass of dark matter","Distance to nearest exoplanet"],answer:1,explain:"Drake's 1961 equation estimates N — the number of contactable civilizations."},
+    {type:"mc",q:"Which detection method finds most exoplanets via periodic stellar brightness dips?",choices:["Radial velocity","Transit photometry","Direct imaging","Gravitational microlensing"],answer:1,explain:"Transit photometry (Kepler/TESS) detects planets crossing their host stars."},
+  ],
+  // Pluto
+  [
+    {type:"mc",q:"Which IAU planet criterion does Pluto fail?",choices:["Orbits the Sun","Hydrostatic equilibrium","Cleared its orbital neighborhood","Has at least one moon"],answer:2,explain:"Pluto shares its orbit with many Kuiper Belt objects."},
+    {type:"sensor",sensor:"orientation",q:"⚠️ CRITICAL: Point device due South (compass ~180° ±25°) to lock Pluto's orbital plane. Hold 3 sec. ONE mistake = INSTANT FREEZE.",threshold:{heading:180,tolerance:25,duration:3000},fallbackQ:"Pluto's heart-shaped Tombaugh Regio is primarily:",fallbackChoices:["Water ice","Nitrogen ice","CO₂ ice","Methane ice"],fallbackAnswer:1,explain:"Sputnik Planitia is a vast basin of nitrogen ice with convective overturn."},
+    {type:"mc",q:"Could a rogue planet with subsurface ocean heated by radioactive decay support life?",choices:["No — sunlight is required","Yes — chemosynthetic life near vents","No — liquid water needs a star","Yes — but only plants"],answer:1,explain:"Earth's deep-sea vents host life via chemosynthesis without sunlight."},
+  ],
+];
+
+// ═══════════════════════════════════════
+//  UI & QUESTION SYSTEM
+// ═══════════════════════════════════════
+function updateHUD(){
+  const p=PLANETS[STATE.currentPlanet];
+  document.getElementById('hudPlanet').textContent=p?p.name:'';
+  document.getElementById('o2Text').textContent=Math.round(STATE.oxygen)+'%';
+  document.getElementById('hudScore').textContent=STATE.score;
+  const bar=document.getElementById('o2Bar');
+  bar.style.width=STATE.oxygen+'%';
+  bar.style.background=STATE.oxygen>50?'#5eff8a':STATE.oxygen>25?'#ffc040':'#ff4444';
+}
+function showOverlay(id){document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function hideOverlays(){document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('active'));}
+
+let activeSensorInterval = null;
+
+function showQuestion(){
+  if(activeSensorInterval){clearInterval(activeSensorInterval);activeSensorInterval=null;}
+  const planet=PLANETS[STATE.currentPlanet];
+  const meta=PLANET_META[STATE.currentPlanet];
+  const qData=QUESTIONS[STATE.currentPlanet][STATE.currentQuestion];
+  const qNum=STATE.currentQuestion+1;
+  const panel=document.getElementById('questionPanel');
+
+  // Tell the phone what's happening
+  sendToPhone({type:'question', planet:planet.name, qNum, total:3, topic:meta.topic, isSensor:qData.type==='sensor', sensorType:qData.sensor||null});
+
+  let html=`<h2>${planet.name} — Q${qNum}/3</h2>`;
+  html+=`<div class="subtitle">${meta.topic} · ${meta.difficulty}</div>`;
+
+  const useSensor = qData.type==='sensor' && phoneConnected;
+
+  if(qData.type==='mc' || !useSensor){
+    const q = qData.type==='sensor' ? {q:qData.fallbackQ,choices:qData.fallbackChoices,answer:qData.fallbackAnswer,explain:qData.explain} : qData;
+    html+=`<div class="question-text">${q.q}</div>`;
+    q.choices.forEach((c,i)=>{html+=`<button class="answer-btn" data-idx="${i}">${String.fromCharCode(65+i)}) ${c}</button>`;});
+    if(qData.type==='sensor' && !phoneConnected){
+      html+=`<div class="phone-indicator">📱 No phone — using text fallback</div>`;
+    }
+    panel.innerHTML=html;
+    showOverlay('questionOverlay');
+    attachMC(q.answer,meta);
+  } else {
+    html+=`<div class="question-text">${qData.q}</div>`;
+    html+=`<div class="sensor-zone">`;
+    html+=`<div class="sensor-label">📱 PHONE ${qData.sensor.toUpperCase()} READING</div>`;
+    html+=`<div class="sensor-value" id="sensorVal">Waiting for phone...</div>`;
+    html+=`<div class="sensor-instruction">Move your phone as instructed above.</div>`;
+    html+=`<div class="progress-outer"><div class="progress-inner" id="sensorProg"></div></div>`;
+    html+=`<div class="phone-indicator connected">📱 Phone streaming sensor data</div>`;
+    html+=`</div>`;
+    panel.innerHTML=html;
+    showOverlay('questionOverlay');
+    sendToPhone({type:'sensor_start', sensor:qData.sensor, instruction:qData.q});
+    startSensorCheck(qData,meta);
+  }
+}
+
+function attachMC(correctIdx,meta){
+  const btns=document.querySelectorAll('.answer-btn');
+  btns.forEach(btn=>{btn.addEventListener('click',function handler(){
+    btns.forEach(b=>{b.disabled=true;b.removeEventListener('click',handler);});
+    const idx=parseInt(this.dataset.idx);
+    if(idx===correctIdx){this.classList.add('correct');handleCorrect(meta);}
+    else{this.classList.add('wrong');btns[correctIdx].classList.add('correct');handleWrong(meta);}
+  });});
+}
+
+function startSensorCheck(qData,meta){
+  let holdStart=null;
+  const th=qData.threshold;
+  activeSensorInterval=setInterval(()=>{
+    const sd=sensorData; // from phone via PeerJS
+    const valEl=document.getElementById('sensorVal');
+    const prog=document.getElementById('sensorProg');
+    if(!valEl){clearInterval(activeSensorInterval);return;}
+
+    let inRange=false,display='';
+    if(th.axis==='z'){display=sd.accel.z.toFixed(2)+' m/s²';inRange=sd.accel.z>=th.min&&sd.accel.z<=th.max;}
+    else if(th.axis==='beta'){display=sd.beta.toFixed(1)+'°';inRange=sd.beta>=th.min&&sd.beta<=th.max;}
+    else if(th.axis==='gamma'){const g=Math.abs(sd.gamma);display=g.toFixed(1)+'°';inRange=g>=th.min&&g<=th.max;}
+    else if(th.heading!==undefined){display=sd.alpha.toFixed(1)+'°';const diff=Math.abs(((sd.alpha-th.heading+540)%360)-180);inRange=diff<=th.tolerance;}
+    valEl.textContent=display;
+
+    if(inRange){
+      if(!holdStart)holdStart=Date.now();
+      const pct=Math.min(100,((Date.now()-holdStart)/(th.duration||2000))*100);
+      if(prog)prog.style.width=pct+'%';
+      if(Date.now()-holdStart>=(th.duration||2000)){
+        clearInterval(activeSensorInterval);activeSensorInterval=null;
+        if(prog)prog.style.width='100%';
+        sendToPhone({type:'sensor_result',success:true});
+        handleCorrect(meta);
+      }
+    }else{holdStart=null;if(prog)prog.style.width='0%';}
+  },80);
+}
+
+function handleCorrect(meta){
+  const planet=PLANETS[STATE.currentPlanet];
+  STATE.score+=meta.pluto?50:(10+STATE.currentPlanet*5);
+  STATE.oxygen=Math.min(100,STATE.oxygen+(meta.pluto?5:8));
+  updateHUD();
+  const qData=QUESTIONS[STATE.currentPlanet][STATE.currentQuestion];
+  const panel=document.getElementById('questionPanel');
+  panel.innerHTML+=`<div class="result-msg correct">✅ Correct! +O₂ restored.<br><br>${qData.explain}</div>`;
+  const label=STATE.currentQuestion<2?'Next Question':(STATE.currentPlanet<8?'Travel to '+PLANETS[STATE.currentPlanet+1].name:'See Results');
+  panel.innerHTML+=`<button class="btn-primary" id="nextBtn">${label}</button>`;
+  document.getElementById('nextBtn').onclick=advance;
+  sendToPhone({type:'result',correct:true,o2:Math.round(STATE.oxygen),score:STATE.score});
+}
+
+function handleWrong(meta){
+  if(meta.pluto){STATE.oxygen=0;STATE.alive=false;updateHUD();sendToPhone({type:'death',cause:'frozen'});showDeath("frozen");return;}
+  STATE.oxygen=Math.max(0,STATE.oxygen-meta.o2Penalty);
+  updateHUD();
+  if(STATE.oxygen<=0){STATE.alive=false;sendToPhone({type:'death',cause:'suffocated'});showDeath("suffocated");return;}
+  const qData=QUESTIONS[STATE.currentPlanet][STATE.currentQuestion];
+  const panel=document.getElementById('questionPanel');
+  panel.innerHTML+=`<div class="result-msg wrong">❌ Wrong! O₂ −${meta.o2Penalty}%.<br><br>${qData.explain}</div>`;
+  const label=STATE.currentQuestion<2?'Next Question':(STATE.currentPlanet<8?'Travel to '+PLANETS[STATE.currentPlanet+1].name:'See Results');
+  panel.innerHTML+=`<button class="btn-primary" id="nextBtn">${label}</button>`;
+  document.getElementById('nextBtn').onclick=advance;
+  sendToPhone({type:'result',correct:false,o2:Math.round(STATE.oxygen),score:STATE.score});
+}
+
+function advance(){
+  STATE.currentQuestion++;
+  if(STATE.currentQuestion>=3){
+    STATE.currentQuestion=0;STATE.currentPlanet++;
+    if(STATE.currentPlanet>=PLANETS.length){showWin();return;}
+    hideOverlays();travelTo(STATE.currentPlanet);
+  }else{showQuestion();}
+}
+
+function travelTo(idx){
+  const p=PLANETS[idx];
+  shipTargetX=40+p.dist*SCALE-50;shipTargetY=baseY()+planetSeeds[idx];
+  shipTraveling=true;updateHUD();
+  document.getElementById('planetLabel').textContent='Traveling to '+p.name+'...';
+  sendToPhone({type:'travel',planet:p.name});
+  onArrival=()=>{document.getElementById('planetLabel').textContent=p.name;showQuestion();};
+}
+
+function showDeath(cause){
+  const p=PLANETS[STATE.currentPlanet],panel=document.getElementById('deathPanel');
+  if(cause==='frozen')panel.innerHTML=`<h2>❄️ FROZEN SOLID</h2><p>Pluto's −230°C cold claims another explorer.</p><p style="color:#6a8ccc;margin-top:16px">Score: ${STATE.score} · Reached: ${p.name}</p><button class="btn-primary" onclick="location.reload()">Try Again</button>`;
+  else panel.innerHTML=`<h2>💀 OXYGEN DEPLETED</h2><p>Life support failed near ${p.name}.</p><p style="color:#6a8ccc;margin-top:16px">Score: ${STATE.score} · Final O₂: 0%</p><button class="btn-primary" onclick="location.reload()">Try Again</button>`;
+  showOverlay('deathOverlay');
+}
+
+function showWin(){
+  const grade=STATE.oxygen>75?'S':STATE.oxygen>50?'A':STATE.oxygen>25?'B':'C';
+  const panel=document.getElementById('winPanel');
+  panel.innerHTML=`<h1>🎉 Mission Complete!</h1><p style="color:#b0c4e8;font-size:1.1em">You traversed the entire Solar System!</p><p style="color:#8bb4ff;font-size:1.3em;margin:16px 0">Score: ${STATE.score} · Grade: ${grade}</p><p style="color:#6a8ccc">Final O₂: ${Math.round(STATE.oxygen)}%</p><button class="btn-primary" onclick="location.reload()" style="margin-top:18px">Play Again</button>`;
+  showOverlay('winOverlay');
+  sendToPhone({type:'win',score:STATE.score,grade});
+}
+
+// ═══════════════════════════════════════
+//  START BUTTONS
+// ═══════════════════════════════════════
+document.getElementById('startBtn').onclick=()=>{
+  hideOverlays();document.getElementById('hud').style.display='flex';updateHUD();
+  sendToPhone({type:'game_start'});
+  travelTo(0);
+};
+document.getElementById('skipBtn').onclick=()=>{
+  hideOverlays();document.getElementById('hud').style.display='flex';updateHUD();travelTo(0);
+};
+</script>
+</body>
+</html>
