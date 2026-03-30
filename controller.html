@@ -4,84 +4,90 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Stellar Odyssey — Phone Controller</title>
+<script src="https://unpkg.com/kaplay@3001/dist/kaplay.js"></script>
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{min-height:100vh;background:linear-gradient(135deg,#070a18,#0f0a24);font-family:'Segoe UI',system-ui,sans-serif;color:#fff;overflow-x:hidden}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { min-height: 100vh; background: #050510; font-family: 'Segoe UI', system-ui, sans-serif; color: #fff; overflow-x: hidden; }
 
-.container{max-width:420px;margin:0 auto;padding:24px 20px;min-height:100vh;display:flex;flex-direction:column}
+/* KAPLAY canvas is the background */
+canvas { display: block; position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
 
-h1{font-size:1.4em;text-align:center;margin-bottom:4px;background:linear-gradient(135deg,#8bb4ff,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.tagline{text-align:center;color:#6a8ccc;font-size:0.78em;margin-bottom:24px}
+/* All HTML UI sits above the canvas */
+.container { position: relative; z-index: 10; max-width: 420px; margin: 0 auto; padding: 24px 20px; min-height: 100vh; display: flex; flex-direction: column; }
+
+h1 { font-size: 1.4em; text-align: center; margin-bottom: 4px; background: linear-gradient(135deg, #8bb4ff, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.tagline { text-align: center; color: #6a8ccc; font-size: 0.78em; margin-bottom: 24px; }
 
 /* ── Pairing Screen ── */
-.pair-section{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center}
-.pair-label{color:#8899bb;font-size:0.88em;margin-bottom:12px;text-align:center}
-.code-input-row{display:flex;gap:6px;margin-bottom:16px}
-.code-char{width:42px;height:54px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(100,140,255,0.25);border-radius:10px;text-align:center;font-size:1.5em;font-weight:700;color:#fff;font-family:monospace;outline:none;caret-color:#8bb4ff;transition:border-color 0.2s}
-.code-char:focus{border-color:rgba(100,140,255,0.6);background:rgba(100,140,255,0.08)}
-.code-char::placeholder{color:rgba(100,140,255,0.25)}
+.pair-section { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.pair-label { color: #8899bb; font-size: 0.88em; margin-bottom: 12px; text-align: center; }
+.code-input-row { display: flex; gap: 6px; margin-bottom: 16px; }
+.code-char { width: 42px; height: 54px; background: rgba(255,255,255,0.06); border: 1.5px solid rgba(100,140,255,0.25); border-radius: 10px; text-align: center; font-size: 1.5em; font-weight: 700; color: #fff; font-family: monospace; outline: none; caret-color: #8bb4ff; transition: border-color 0.2s; }
+.code-char:focus { border-color: rgba(100,140,255,0.6); background: rgba(100,140,255,0.08); }
+.code-char::placeholder { color: rgba(100,140,255,0.25); }
 
-.connect-btn{padding:13px 40px;border:none;border-radius:12px;background:linear-gradient(135deg,#4060cc,#6040cc);color:#fff;font-size:1em;cursor:pointer;font-family:inherit;transition:all 0.2s;box-shadow:0 0 20px rgba(80,80,200,0.25)}
-.connect-btn:hover{transform:scale(1.03)}
-.connect-btn:disabled{opacity:0.4;pointer-events:none}
+.connect-btn { padding: 13px 40px; border: none; border-radius: 12px; background: linear-gradient(135deg, #4060cc, #6040cc); color: #fff; font-size: 1em; cursor: pointer; font-family: inherit; transition: all 0.2s; box-shadow: 0 0 20px rgba(80,80,200,0.25); }
+.connect-btn:hover { transform: scale(1.03); }
+.connect-btn:disabled { opacity: 0.4; pointer-events: none; }
 
-.conn-status{text-align:center;color:#ff9040;font-size:0.85em;margin-top:12px;min-height:22px}
-.conn-status.ok{color:#5eff8a}
-.conn-status.err{color:#ff5050}
+.conn-status { text-align: center; color: #ff9040; font-size: 0.85em; margin-top: 12px; min-height: 22px; }
+.conn-status.ok  { color: #5eff8a; }
+.conn-status.err { color: #ff5050; }
 
 /* ── Controller Screen ── */
-.controller{display:none;flex:1;flex-direction:column}
-.ctrl-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(100,140,255,0.12)}
-.ctrl-planet{color:#8bb4ff;font-size:1.05em;font-weight:600}
-.ctrl-o2{display:flex;align-items:center;gap:6px;color:#8bb4ff;font-size:0.85em}
-.o2-mini-outer{width:70px;height:7px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden}
-.o2-mini-inner{height:100%;border-radius:4px;transition:width 0.4s,background 0.4s;background:#5eff8a;width:100%}
+.controller { display: none; flex: 1; flex-direction: column; }
+.ctrl-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(100,140,255,0.12); }
+.ctrl-planet { color: #8bb4ff; font-size: 1.05em; font-weight: 600; }
+.ctrl-o2 { display: flex; align-items: center; gap: 6px; color: #8bb4ff; font-size: 0.85em; }
+.o2-mini-outer { width: 70px; height: 7px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+.o2-mini-inner { height: 100%; border-radius: 4px; transition: width 0.4s, background 0.4s; background: #5eff8a; width: 100%; }
 
-.status-card{background:rgba(255,255,255,0.035);border:1px solid rgba(100,140,255,0.15);border-radius:14px;padding:20px;margin-bottom:14px;text-align:center}
-.status-card h3{color:#8bb4ff;font-size:1em;margin-bottom:6px}
-.status-card p{color:#8899bb;font-size:0.85em;line-height:1.5}
+.status-card { background: rgba(255,255,255,0.035); border: 1px solid rgba(100,140,255,0.15); border-radius: 14px; padding: 20px; margin-bottom: 14px; text-align: center; }
+.status-card h3 { color: #8bb4ff; font-size: 1em; margin-bottom: 6px; }
+.status-card p  { color: #8899bb; font-size: 0.85em; line-height: 1.5; }
 
 /* ── Sensor Display ── */
-.sensor-active{display:none;flex-direction:column;align-items:center;flex:1}
-.sensor-active.visible{display:flex}
-.sensor-ring{width:160px;height:160px;border-radius:50%;border:3px solid rgba(100,140,255,0.2);display:flex;align-items:center;justify-content:center;flex-direction:column;margin:16px 0;position:relative;transition:border-color 0.3s}
-.sensor-ring.in-range{border-color:#5eff8a;box-shadow:0 0 30px rgba(80,255,130,0.15)}
-.sensor-ring .big-val{font-size:2.2em;font-weight:800;color:#8bb4ff;font-variant-numeric:tabular-nums;transition:color 0.3s}
-.sensor-ring.in-range .big-val{color:#5eff8a}
-.sensor-ring .unit{color:#6a8ccc;font-size:0.8em}
-.sensor-type-label{color:#6a8ccc;font-size:0.75em;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px}
-.sensor-instr{color:#8899bb;font-size:0.85em;text-align:center;line-height:1.5;max-width:320px;margin:8px auto}
-.sensor-progress-outer{width:80%;max-width:280px;height:8px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;margin-top:12px}
-.sensor-progress-inner{width:0%;height:100%;background:linear-gradient(90deg,#4080ff,#5eff8a);border-radius:4px;transition:width 0.15s}
+.sensor-active { display: none; flex-direction: column; align-items: center; flex: 1; }
+.sensor-active.visible { display: flex; }
+.sensor-ring { width: 160px; height: 160px; border-radius: 50%; border: 3px solid rgba(100,140,255,0.2); display: flex; align-items: center; justify-content: center; flex-direction: column; margin: 16px 0; position: relative; transition: border-color 0.3s; }
+.sensor-ring.in-range { border-color: #5eff8a; box-shadow: 0 0 30px rgba(80,255,130,0.15); }
+.sensor-ring .big-val  { font-size: 2.2em; font-weight: 800; color: #8bb4ff; font-variant-numeric: tabular-nums; transition: color 0.3s; }
+.sensor-ring.in-range .big-val { color: #5eff8a; }
+.sensor-ring .unit { color: #6a8ccc; font-size: 0.8em; }
+.sensor-type-label { color: #6a8ccc; font-size: 0.75em; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px; }
+.sensor-instr { color: #8899bb; font-size: 0.85em; text-align: center; line-height: 1.5; max-width: 320px; margin: 8px auto; }
+.sensor-progress-outer { width: 80%; max-width: 280px; height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; margin-top: 12px; }
+.sensor-progress-inner { width: 0%; height: 100%; background: linear-gradient(90deg, #4080ff, #5eff8a); border-radius: 4px; transition: width 0.15s; }
 
 /* ── Result Flash ── */
-.result-flash{display:none;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center}
-.result-flash.visible{display:flex}
-.result-icon{font-size:3.5em;margin-bottom:10px}
-.result-text{font-size:1.1em;margin-bottom:6px}
-.result-sub{color:#6a8ccc;font-size:0.85em}
+.result-flash { display: none; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; }
+.result-flash.visible { display: flex; }
+.result-icon { font-size: 3.5em; margin-bottom: 10px; }
+.result-text { font-size: 1.1em; margin-bottom: 6px; }
+.result-sub  { color: #6a8ccc; font-size: 0.85em; }
 
 /* ── Travel animation ── */
-.travel-anim{display:none;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center}
-.travel-anim.visible{display:flex}
-.travel-anim .rocket{font-size:3em;animation:rocketBounce 1s ease-in-out infinite}
-@keyframes rocketBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-.travel-anim p{color:#8899bb;font-size:0.95em;margin-top:10px}
+.travel-anim { display: none; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; }
+.travel-anim.visible { display: flex; }
+.travel-anim .rocket { font-size: 3em; animation: rocketBounce 1s ease-in-out infinite; }
+@keyframes rocketBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+.travel-anim p { color: #8899bb; font-size: 0.95em; margin-top: 10px; }
 
 /* ── Death / Win ── */
-.end-screen{display:none;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center}
-.end-screen.visible{display:flex}
-.end-screen .big-icon{font-size:4em;margin-bottom:12px}
-.end-screen h2{font-size:1.5em;margin-bottom:8px}
-.end-screen p{color:#8899bb;font-size:0.9em;margin-bottom:6px}
+.end-screen { display: none; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; }
+.end-screen.visible { display: flex; }
+.end-screen .big-icon { font-size: 4em; margin-bottom: 12px; }
+.end-screen h2 { font-size: 1.5em; margin-bottom: 8px; }
+.end-screen p  { color: #8899bb; font-size: 0.9em; margin-bottom: 6px; }
 
-/* ── All sensor data debug (small) ── */
-.debug-sensors{position:fixed;bottom:8px;left:8px;right:8px;padding:8px 10px;background:rgba(0,0,0,0.5);border-radius:8px;font-size:0.65em;color:#4a5a7a;font-family:monospace;display:none}
-.debug-sensors.visible{display:block}
+/* ── Debug sensors ── */
+.debug-sensors { position: fixed; bottom: 8px; left: 8px; right: 8px; padding: 8px 10px; background: rgba(0,0,0,0.5); border-radius: 8px; font-size: 0.65em; color: #4a5a7a; font-family: monospace; display: none; z-index: 20; }
+.debug-sensors.visible { display: block; }
 </style>
 </head>
 <body>
+
 <div class="container">
   <h1>🚀 Stellar Odyssey</h1>
   <p class="tagline">Phone Controller</p>
@@ -105,13 +111,13 @@ h1{font-size:1.4em;text-align:center;margin-bottom:4px;background:linear-gradien
       </div>
     </div>
 
-    <!-- Idle status -->
+    <!-- Idle -->
     <div class="status-card" id="idleCard">
       <h3>📡 Connected to Mission Control</h3>
       <p>Your phone is paired and streaming sensor data. Keep this page open — the computer screen will show the game.</p>
     </div>
 
-    <!-- Sensor challenge active -->
+    <!-- Sensor challenge -->
     <div class="sensor-active" id="sensorActive">
       <div class="sensor-type-label" id="sensorTypeLabel">ACCELEROMETER</div>
       <div class="sensor-ring" id="sensorRing">
@@ -126,7 +132,7 @@ h1{font-size:1.4em;text-align:center;margin-bottom:4px;background:linear-gradien
     <div class="result-flash" id="resultFlash">
       <div class="result-icon" id="resultIcon">✅</div>
       <div class="result-text" id="resultText">Correct!</div>
-      <div class="result-sub" id="resultSub">O₂: 100% · Score: 0</div>
+      <div class="result-sub"  id="resultSub">O₂: 100% · Score: 0</div>
     </div>
 
     <!-- Travel -->
@@ -154,291 +160,291 @@ h1{font-size:1.4em;text-align:center;margin-bottom:4px;background:linear-gradien
 <div class="debug-sensors" id="debugSensors">α: 0 β: 0 γ: 0 | ax: 0 ay: 0 az: 0</div>
 
 <script>
-// ═══════════════════════════════════════
-//  CODE INPUT
-// ═══════════════════════════════════════
-const codeRow = document.getElementById('codeRow');
-const inputs = [];
+// ─── KAPLAY STARFIELD BACKGROUND ──────────────────────────────────────────────
+kaplay({ background: [5, 5, 16], letterbox: false })
+
+scene("bg", () => {
+  const STARS = Array.from({ length: 180 }, () => ({
+    x:       Math.random() * width(),
+    y:       Math.random() * height(),
+    r:       Math.random() * 1.5 + 0.3,
+    bright:  Math.random() * 0.4 + 0.3,
+    twinkle: Math.random() * 0.3 + 0.05,
+  }))
+
+  onDraw(() => {
+    const t = time()
+    STARS.forEach(s => {
+      const alpha = Math.max(0.1, s.bright + Math.sin(t * s.twinkle * 6 + s.x) * 0.15)
+      drawCircle({
+        pos:     vec2(s.x, s.y),
+        radius:  s.r,
+        color:   rgb(200, 220, 255),
+        opacity: alpha,
+      })
+    })
+  })
+})
+
+go("bg")
+</script>
+
+<script>
+// ─── CODE INPUT ───────────────────────────────────────────────────────────────
+const codeRow = document.getElementById('codeRow')
+const inputs  = []
 for (let i = 0; i < 6; i++) {
-  const inp = document.createElement('input');
-  inp.className = 'code-char';
-  inp.maxLength = 1;
-  inp.placeholder = '·';
-  inp.autocomplete = 'off';
-  inp.inputMode = 'text';
-  codeRow.appendChild(inp);
-  inputs.push(inp);
+  const inp = document.createElement('input')
+  inp.className   = 'code-char'
+  inp.maxLength   = 1
+  inp.placeholder = '·'
+  inp.autocomplete = 'off'
+  inp.inputMode   = 'text'
+  codeRow.appendChild(inp)
+  inputs.push(inp)
 
   inp.addEventListener('input', () => {
-    inp.value = inp.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-    if (inp.value && i < 5) inputs[i + 1].focus();
-    checkCode();
-  });
+    inp.value = inp.value.toUpperCase().replace(/[^A-Z0-9]/g, '')
+    if (inp.value && i < 5) inputs[i + 1].focus()
+    checkCode()
+  })
   inp.addEventListener('keydown', (e) => {
-    if (e.key === 'Backspace' && !inp.value && i > 0) { inputs[i - 1].focus(); inputs[i - 1].value = ''; checkCode(); }
-    if (e.key === 'Enter') document.getElementById('connectBtn').click();
-  });
+    if (e.key === 'Backspace' && !inp.value && i > 0) { inputs[i - 1].focus(); inputs[i - 1].value = ''; checkCode() }
+    if (e.key === 'Enter') document.getElementById('connectBtn').click()
+  })
   inp.addEventListener('paste', (e) => {
-    e.preventDefault();
-    const text = (e.clipboardData.getData('text') || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-    for (let j = 0; j < 6 && j < text.length; j++) { inputs[j].value = text[j]; }
-    if (text.length > 0) inputs[Math.min(5, text.length - 1)].focus();
-    checkCode();
-  });
+    e.preventDefault()
+    const text = (e.clipboardData.getData('text') || '').toUpperCase().replace(/[^A-Z0-9]/g, '')
+    for (let j = 0; j < 6 && j < text.length; j++) inputs[j].value = text[j]
+    if (text.length > 0) inputs[Math.min(5, text.length - 1)].focus()
+    checkCode()
+  })
 }
-inputs[0].focus();
+inputs[0].focus()
 
 function checkCode() {
-  const code = inputs.map(i => i.value).join('');
-  document.getElementById('connectBtn').disabled = code.length < 6;
+  document.getElementById('connectBtn').disabled = inputs.map(i => i.value).join('').length < 6
 }
-
 function getCode() {
-  return inputs.map(i => i.value).join('');
+  return inputs.map(i => i.value).join('')
 }
 
-// ═══════════════════════════════════════
-//  PEER CONNECTION
-// ═══════════════════════════════════════
-let conn = null;
-let sensorInterval = null;
+// ─── PEER CONNECTION ──────────────────────────────────────────────────────────
+let conn = null
+let sensorInterval = null
 
 document.getElementById('connectBtn').addEventListener('click', () => {
-  const code = getCode();
-  if (code.length < 6) return;
+  const code   = getCode()
+  if (code.length < 6) return
 
-  const status = document.getElementById('connStatus');
-  status.textContent = 'Connecting...';
-  status.className = 'conn-status';
+  const status = document.getElementById('connStatus')
+  status.textContent = 'Connecting...'
+  status.className   = 'conn-status'
 
-  const peerId = 'stellar-odyssey-' + code.toLowerCase();
-  const peer = new Peer(undefined, { debug: 0 });
+  const peerId = 'stellar-odyssey-' + code.toLowerCase()
+  const peer   = new Peer(undefined, { debug: 0 })
 
   peer.on('open', () => {
-    conn = peer.connect(peerId, { reliable: true });
+    conn = peer.connect(peerId, { reliable: true })
 
     conn.on('open', () => {
-      status.textContent = '✅ Connected!';
-      status.className = 'conn-status ok';
-      document.getElementById('pairSection').style.display = 'none';
-      document.getElementById('controller').style.display = 'flex';
-      startSensorStream();
-      requestSensors();
-    });
+      status.textContent = '✅ Connected!'
+      status.className   = 'conn-status ok'
+      document.getElementById('pairSection').style.display = 'none'
+      document.getElementById('controller').style.display  = 'flex'
+      startSensorStream()
+      requestSensors()
+    })
 
-    conn.on('data', handleMessage);
+    conn.on('data', handleMessage)
 
     conn.on('close', () => {
-      status.textContent = 'Disconnected from game.';
-      status.className = 'conn-status err';
-    });
+      status.textContent = 'Disconnected from game.'
+      status.className   = 'conn-status err'
+    })
 
     conn.on('error', (err) => {
-      status.textContent = 'Connection error: ' + err;
-      status.className = 'conn-status err';
-    });
-  });
+      status.textContent = 'Connection error: ' + err
+      status.className   = 'conn-status err'
+    })
+  })
 
   peer.on('error', (err) => {
     if (err.type === 'peer-unavailable') {
-      status.textContent = 'Code not found. Is the game open on your computer?';
+      status.textContent = 'Code not found. Is the game open on your computer?'
     } else {
-      status.textContent = 'Error: ' + err.type;
+      status.textContent = 'Error: ' + err.type
     }
-    status.className = 'conn-status err';
-  });
-});
+    status.className = 'conn-status err'
+  })
+})
 
-// ═══════════════════════════════════════
-//  SENSOR DATA COLLECTION & STREAMING
-// ═══════════════════════════════════════
-const sData = { alpha: 0, beta: 0, gamma: 0, accel: { x: 0, y: 0, z: 0 } };
+// ─── SENSOR DATA ──────────────────────────────────────────────────────────────
+const sData = { alpha: 0, beta: 0, gamma: 0, accel: { x: 0, y: 0, z: 0 } }
 
 function requestSensors() {
   if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-    DeviceOrientationEvent.requestPermission().then(p => { if (p === 'granted') attachSensors(); }).catch(() => {});
-    DeviceMotionEvent.requestPermission().then(p => { if (p === 'granted') attachMotion(); }).catch(() => {});
+    DeviceOrientationEvent.requestPermission().then(p => { if (p === 'granted') attachSensors() }).catch(() => {})
+    DeviceMotionEvent.requestPermission().then(p => { if (p === 'granted') attachMotion() }).catch(() => {})
   } else {
-    attachSensors();
-    attachMotion();
+    attachSensors()
+    attachMotion()
   }
 }
 
 function attachSensors() {
   window.addEventListener('deviceorientation', (e) => {
-    sData.alpha = e.alpha || 0;
-    sData.beta = e.beta || 0;
-    sData.gamma = e.gamma || 0;
-  }, true);
+    sData.alpha = e.alpha || 0
+    sData.beta  = e.beta  || 0
+    sData.gamma = e.gamma || 0
+  }, true)
 }
 
 function attachMotion() {
   window.addEventListener('devicemotion', (e) => {
-    const a = e.accelerationIncludingGravity || {};
-    sData.accel = { x: a.x || 0, y: a.y || 0, z: a.z || 0 };
-  }, true);
+    const a     = e.accelerationIncludingGravity || {}
+    sData.accel = { x: a.x || 0, y: a.y || 0, z: a.z || 0 }
+  }, true)
 }
 
 function startSensorStream() {
-  // Stream sensor data to computer at ~20Hz
   sensorInterval = setInterval(() => {
     if (conn && conn.open) {
-      conn.send({
-        type: 'sensor',
-        alpha: sData.alpha,
-        beta: sData.beta,
-        gamma: sData.gamma,
-        accel: sData.accel
-      });
+      conn.send({ type: 'sensor', alpha: sData.alpha, beta: sData.beta, gamma: sData.gamma, accel: sData.accel })
     }
-    // Debug display
-    const dbg = document.getElementById('debugSensors');
-    dbg.textContent = `α:${sData.alpha.toFixed(1)} β:${sData.beta.toFixed(1)} γ:${sData.gamma.toFixed(1)} | z:${sData.accel.z.toFixed(2)}`;
-  }, 50);
+    document.getElementById('debugSensors').textContent =
+      `α:${sData.alpha.toFixed(1)} β:${sData.beta.toFixed(1)} γ:${sData.gamma.toFixed(1)} | z:${sData.accel.z.toFixed(2)}`
+  }, 50)
 }
 
-// ═══════════════════════════════════════
-//  HANDLE MESSAGES FROM COMPUTER
-// ═══════════════════════════════════════
+// ─── MESSAGES FROM COMPUTER ───────────────────────────────────────────────────
 function hideAllSections() {
-  document.getElementById('idleCard').style.display = 'none';
-  document.getElementById('sensorActive').classList.remove('visible');
-  document.getElementById('resultFlash').classList.remove('visible');
-  document.getElementById('travelAnim').classList.remove('visible');
-  document.getElementById('deathScreen').classList.remove('visible');
-  document.getElementById('winScreen').classList.remove('visible');
+  document.getElementById('idleCard').style.display = 'none'
+  document.getElementById('sensorActive').classList.remove('visible')
+  document.getElementById('resultFlash').classList.remove('visible')
+  document.getElementById('travelAnim').classList.remove('visible')
+  document.getElementById('deathScreen').classList.remove('visible')
+  document.getElementById('winScreen').classList.remove('visible')
 }
 
 function handleMessage(msg) {
   switch (msg.type) {
     case 'status':
-      document.getElementById('idleCard').querySelector('p').textContent = msg.text;
-      break;
+      document.getElementById('idleCard').querySelector('p').textContent = msg.text
+      break
 
     case 'game_start':
-      hideAllSections();
-      document.getElementById('travelAnim').classList.add('visible');
-      document.getElementById('travelText').textContent = 'Launching to Mercury...';
-      document.getElementById('debugSensors').classList.add('visible');
-      break;
+      hideAllSections()
+      document.getElementById('travelAnim').classList.add('visible')
+      document.getElementById('travelText').textContent = 'Launching to Mercury...'
+      document.getElementById('debugSensors').classList.add('visible')
+      break
 
     case 'travel':
-      hideAllSections();
-      document.getElementById('ctrlPlanet').textContent = msg.planet;
-      document.getElementById('travelAnim').classList.add('visible');
-      document.getElementById('travelText').textContent = `Traveling to ${msg.planet}...`;
-      // Vibrate if available
-      if (navigator.vibrate) navigator.vibrate(100);
-      break;
+      hideAllSections()
+      document.getElementById('ctrlPlanet').textContent = msg.planet
+      document.getElementById('travelAnim').classList.add('visible')
+      document.getElementById('travelText').textContent = `Traveling to ${msg.planet}...`
+      if (navigator.vibrate) navigator.vibrate(100)
+      break
 
     case 'question':
-      hideAllSections();
-      document.getElementById('ctrlPlanet').textContent = msg.planet;
-      if (msg.isSensor) {
-        document.getElementById('idleCard').style.display = 'none';
-      } else {
-        document.getElementById('idleCard').style.display = 'block';
-        document.getElementById('idleCard').querySelector('h3').textContent = `${msg.planet} — Q${msg.qNum}/${msg.total}`;
-        document.getElementById('idleCard').querySelector('p').textContent = `Topic: ${msg.topic}. Answer this question on the computer screen.`;
+      hideAllSections()
+      document.getElementById('ctrlPlanet').textContent = msg.planet
+      if (!msg.isSensor) {
+        document.getElementById('idleCard').style.display = 'block'
+        document.getElementById('idleCard').querySelector('h3').textContent = `${msg.planet} — Q${msg.qNum}/${msg.total}`
+        document.getElementById('idleCard').querySelector('p').textContent  = `Topic: ${msg.topic}. Answer on the computer screen.`
       }
-      break;
+      break
 
     case 'sensor_start':
-      hideAllSections();
-      document.getElementById('sensorActive').classList.add('visible');
-      document.getElementById('sensorTypeLabel').textContent = (msg.sensor || '').toUpperCase();
-      document.getElementById('sensorInstr').textContent = msg.instruction || 'Move your device as shown on screen.';
-      document.getElementById('sensorProg').style.width = '0%';
-      document.getElementById('sensorBigVal').textContent = '--';
-      if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
-      break;
+      hideAllSections()
+      document.getElementById('sensorActive').classList.add('visible')
+      document.getElementById('sensorTypeLabel').textContent = (msg.sensor || '').toUpperCase()
+      document.getElementById('sensorInstr').textContent     = msg.instruction || 'Move your device as shown on screen.'
+      document.getElementById('sensorProg').style.width      = '0%'
+      document.getElementById('sensorBigVal').textContent    = '--'
+      if (navigator.vibrate) navigator.vibrate([50, 50, 50])
+      break
 
     case 'sensor_result':
       if (msg.success) {
-        document.getElementById('sensorRing').classList.add('in-range');
-        if (navigator.vibrate) navigator.vibrate(200);
-        setTimeout(() => document.getElementById('sensorRing').classList.remove('in-range'), 1500);
+        document.getElementById('sensorRing').classList.add('in-range')
+        if (navigator.vibrate) navigator.vibrate(200)
+        setTimeout(() => document.getElementById('sensorRing').classList.remove('in-range'), 1500)
       }
-      break;
+      break
 
     case 'result':
-      hideAllSections();
-      document.getElementById('resultFlash').classList.add('visible');
+      hideAllSections()
+      document.getElementById('resultFlash').classList.add('visible')
       if (msg.correct) {
-        document.getElementById('resultIcon').textContent = '✅';
-        document.getElementById('resultText').textContent = 'Correct!';
-        document.getElementById('resultText').style.color = '#5eff8a';
+        document.getElementById('resultIcon').textContent = '✅'
+        document.getElementById('resultText').textContent = 'Correct!'
+        document.getElementById('resultText').style.color = '#5eff8a'
       } else {
-        document.getElementById('resultIcon').textContent = '❌';
-        document.getElementById('resultText').textContent = 'Wrong!';
-        document.getElementById('resultText').style.color = '#ff7070';
-        if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 100]);
+        document.getElementById('resultIcon').textContent = '❌'
+        document.getElementById('resultText').textContent = 'Wrong!'
+        document.getElementById('resultText').style.color = '#ff7070'
+        if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 100])
       }
-      document.getElementById('resultSub').textContent = `O₂: ${msg.o2}% · Score: ${msg.score}`;
-      updateO2(msg.o2);
-      break;
+      document.getElementById('resultSub').textContent = `O₂: ${msg.o2}% · Score: ${msg.score}`
+      updateO2(msg.o2)
+      break
 
     case 'death':
-      hideAllSections();
-      document.getElementById('deathScreen').classList.add('visible');
+      hideAllSections()
+      document.getElementById('deathScreen').classList.add('visible')
       if (msg.cause === 'frozen') {
-        document.getElementById('deathScreen').querySelector('.big-icon').textContent = '❄️';
-        document.getElementById('deathTitle').textContent = 'FROZEN SOLID';
-        document.getElementById('deathText').textContent = 'Pluto\'s icy grip has claimed you.';
+        document.getElementById('deathScreen').querySelector('.big-icon').textContent = '❄️'
+        document.getElementById('deathTitle').textContent = 'FROZEN SOLID'
+        document.getElementById('deathText').textContent  = "Pluto's icy grip has claimed you."
       } else {
-        document.getElementById('deathScreen').querySelector('.big-icon').textContent = '💀';
-        document.getElementById('deathTitle').textContent = 'OXYGEN DEPLETED';
-        document.getElementById('deathText').textContent = 'Your life support has failed.';
+        document.getElementById('deathScreen').querySelector('.big-icon').textContent = '💀'
+        document.getElementById('deathTitle').textContent = 'OXYGEN DEPLETED'
+        document.getElementById('deathText').textContent  = 'Your life support has failed.'
       }
-      if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400]);
-      updateO2(0);
-      break;
+      if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400])
+      updateO2(0)
+      break
 
     case 'win':
-      hideAllSections();
-      document.getElementById('winScreen').classList.add('visible');
-      document.getElementById('winText').textContent = `Score: ${msg.score} · Grade: ${msg.grade}`;
-      if (navigator.vibrate) navigator.vibrate([100, 80, 100, 80, 300]);
-      break;
+      hideAllSections()
+      document.getElementById('winScreen').classList.add('visible')
+      document.getElementById('winText').textContent = `Score: ${msg.score} · Grade: ${msg.grade}`
+      if (navigator.vibrate) navigator.vibrate([100, 80, 100, 80, 300])
+      break
   }
 }
 
 function updateO2(pct) {
-  const bar = document.getElementById('ctrlO2');
-  bar.style.width = pct + '%';
-  bar.style.background = pct > 50 ? '#5eff8a' : pct > 25 ? '#ffc040' : '#ff4444';
-  document.getElementById('ctrlO2Text').textContent = pct + '%';
+  const bar = document.getElementById('ctrlO2')
+  bar.style.width      = pct + '%'
+  bar.style.background = pct > 50 ? '#5eff8a' : pct > 25 ? '#ffc040' : '#ff4444'
+  document.getElementById('ctrlO2Text').textContent = pct + '%'
 }
 
-// ═══════════════════════════════════════
-//  LIVE SENSOR DISPLAY ON PHONE
-// ═══════════════════════════════════════
+// ─── LIVE SENSOR DISPLAY ON PHONE ────────────────────────────────────────────
 setInterval(() => {
-  const valEl = document.getElementById('sensorBigVal');
-  const ring = document.getElementById('sensorRing');
-  if (!document.getElementById('sensorActive').classList.contains('visible')) return;
+  if (!document.getElementById('sensorActive').classList.contains('visible')) return
 
-  const label = document.getElementById('sensorTypeLabel').textContent.toLowerCase();
-  let display = '--', unit = '';
+  const label = document.getElementById('sensorTypeLabel').textContent.toLowerCase()
+  let display = '--', unit = ''
 
   if (label.includes('accel')) {
-    display = sData.accel.z.toFixed(2);
-    unit = 'm/s²';
+    display = sData.accel.z.toFixed(2); unit = 'm/s²'
   } else if (label.includes('gyro')) {
-    display = Math.abs(sData.gamma).toFixed(1);
-    unit = '° gamma';
+    display = Math.abs(sData.gamma).toFixed(1); unit = '° gamma'
   } else if (label.includes('orient') || label.includes('compass')) {
-    display = sData.alpha.toFixed(1);
-    unit = '° heading';
+    display = sData.alpha.toFixed(1); unit = '° heading'
   } else {
-    // fallback — show beta
-    display = sData.beta.toFixed(1);
-    unit = '° beta';
+    display = sData.beta.toFixed(1); unit = '° beta'
   }
 
-  valEl.textContent = display;
-  document.getElementById('sensorUnit').textContent = unit;
-}, 60);
+  document.getElementById('sensorBigVal').textContent = display
+  document.getElementById('sensorUnit').textContent   = unit
+}, 60)
 </script>
 </body>
 </html>
