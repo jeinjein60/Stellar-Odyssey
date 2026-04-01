@@ -114,7 +114,9 @@ h1 { font-size: 1.4em; text-align: center; margin-bottom: 4px; background: linea
     <!-- Idle -->
     <div class="status-card" id="idleCard">
       <h3>📡 Connected to Mission Control</h3>
-      <p>Your phone is paired and streaming sensor data. Keep this page open — the computer screen will show the game.</p>
+      <p id="idleMsg">Tap the button below to enable your phone's sensors, then wait for the game to start.</p>
+      <button class="connect-btn" id="enableSensorsBtn" style="margin-top:14px;width:100%">🔔 Enable Sensors</button>
+      <p id="sensorStatus" style="margin-top:10px;font-size:0.8em;color:#6a8ccc;min-height:18px"></p>
     </div>
 
     <!-- Sensor challenge -->
@@ -253,7 +255,7 @@ document.getElementById('connectBtn').addEventListener('click', () => {
       document.getElementById('pairSection').style.display = 'none'
       document.getElementById('controller').style.display  = 'flex'
       startSensorStream()
-      requestSensors()
+      // Sensors are enabled via the "Enable Sensors" button — must be a user tap on iOS
     })
 
     conn.on('data', handleMessage)
@@ -282,15 +284,44 @@ document.getElementById('connectBtn').addEventListener('click', () => {
 // ─── SENSOR DATA ──────────────────────────────────────────────────────────────
 const sData = { alpha: 0, beta: 0, gamma: 0, accel: { x: 0, y: 0, z: 0 } }
 
+// Must be called directly from a user tap (required by iOS 13+)
 function requestSensors() {
+  const btn    = document.getElementById('enableSensorsBtn')
+  const status = document.getElementById('sensorStatus')
+
   if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-    DeviceOrientationEvent.requestPermission().then(p => { if (p === 'granted') attachSensors() }).catch(() => {})
-    DeviceMotionEvent.requestPermission().then(p => { if (p === 'granted') attachMotion() }).catch(() => {})
+    // iOS 13+ — request both permissions
+    Promise.all([
+      DeviceOrientationEvent.requestPermission(),
+      DeviceMotionEvent.requestPermission(),
+    ]).then(([ori, mot]) => {
+      if (ori === 'granted') attachSensors()
+      if (mot === 'granted') attachMotion()
+      if (ori === 'granted' && mot === 'granted') {
+        btn.textContent  = '✅ Sensors Active'
+        btn.disabled     = true
+        status.textContent = 'Orientation & motion enabled.'
+        status.style.color = '#5eff8a'
+      } else {
+        status.textContent = 'Permission denied — sensor questions will use text fallback.'
+        status.style.color = '#ff9040'
+      }
+    }).catch(() => {
+      status.textContent = 'Could not request permission. Try reloading.'
+      status.style.color = '#ff5050'
+    })
   } else {
+    // Android / desktop — no permission needed, just attach
     attachSensors()
     attachMotion()
+    btn.textContent  = '✅ Sensors Active'
+    btn.disabled     = true
+    status.textContent = 'Sensors enabled.'
+    status.style.color = '#5eff8a'
   }
 }
+
+document.getElementById('enableSensorsBtn').addEventListener('click', requestSensors)
 
 function attachSensors() {
   window.addEventListener('deviceorientation', (e) => {
