@@ -1,4 +1,3 @@
-// questions.js — Planet data, metadata, and all 27 questions
 
 const PLANETS = [
   { name: "Mercury", color: [180, 170, 160], r: 18, dist: 100 },
@@ -21,7 +20,7 @@ const PLANET_META = [
   { topic: "Solar System Structure",              difficulty: "Medium",     o2Penalty: 18,  pluto: false },
   { topic: "Astrophysics & Ice Giants",           difficulty: "Hard",       o2Penalty: 22,  pluto: false },
   { topic: "Exoplanets & Astrobiology",           difficulty: "Hard",       o2Penalty: 22,  pluto: false },
-  { topic: "Ultimate Frontier",                   difficulty: "Extreme ☠️", o2Penalty: 100, pluto: true  },
+  { topic: "Ultimate Frontier",                   difficulty: "Sudden Death", o2Penalty: 100, pluto: true  },
 ]
 
 const QUESTIONS = [

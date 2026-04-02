@@ -1,25 +1,22 @@
-// main.js — KAPLAY game engine for Stellar Odyssey
-
-// ─── INIT ──────────────────────────────────────────────────────────────────────
+//kaplay config
 kaplay({
   background: [5, 5, 16],
   letterbox: false,
   crisp: false,
 })
 
-// ─── CONSTANTS ─────────────────────────────────────────────────────────────────
 const SCALE = 0.9
 
-// ─── STAR DATA (generated once) ────────────────────────────────────────────────
+// stars
 const STARS = Array.from({ length: 280 }, () => ({
-  x:       Math.random() * 4000,
-  y:       Math.random() * 1000,
-  r:       Math.random() * 1.5 + 0.4,
-  bright:  Math.random() * 0.4 + 0.4,
+  x: Math.random() * 4000,
+  y: Math.random() * 1000,
+  r: Math.random() * 1.5 + 0.4,
+  bright: Math.random() * 0.4 + 0.4,
   twinkle: Math.random() * 0.3 + 0.05,
 }))
 
-// ─── MUTABLE GAME STATE ────────────────────────────────────────────────────────
+// game state
 const STATE = {
   oxygen: 100,
   score: 0,
@@ -28,9 +25,9 @@ const STATE = {
   alive: true,
 }
 
-// Ship position / travel
+// Ship movement and starting positon
 let shipX = 40
-let shipY = 0          // set inside scene once height() is available
+let shipY = 0
 let shipTargetX = 40
 let shipTargetY = 0
 let shipTraveling = false
@@ -40,11 +37,10 @@ let camLeft = 0        // world X of screen's left edge
 let planetYOffsets = []
 let activeSensorInterval = null
 
-// ─── HELPERS ───────────────────────────────────────────────────────────────────
 function pX(i) { return 40 + PLANETS[i].dist * SCALE }
 function pY(i) { return height() * 0.52 + planetYOffsets[i] }
 
-// ─── HTML UI HELPERS ───────────────────────────────────────────────────────────
+//ui overlays
 function showOverlay(id) {
   document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'))
   document.getElementById(id).classList.add('active')
@@ -62,15 +58,15 @@ function updateHUD() {
   bar.style.background = STATE.oxygen > 50 ? '#5eff8a' : STATE.oxygen > 25 ? '#ffc040' : '#ff4444'
 }
 
-// ─── QUESTION SYSTEM ───────────────────────────────────────────────────────────
+// questions logic
 function showQuestion() {
   if (activeSensorInterval) { clearInterval(activeSensorInterval); activeSensorInterval = null }
 
   const planet = PLANETS[STATE.currentPlanet]
-  const meta   = PLANET_META[STATE.currentPlanet]
-  const qData  = QUESTIONS[STATE.currentPlanet][STATE.currentQuestion]
-  const qNum   = STATE.currentQuestion + 1
-  const panel  = document.getElementById('questionPanel')
+  const meta = PLANET_META[STATE.currentPlanet]
+  const qData = QUESTIONS[STATE.currentPlanet][STATE.currentQuestion]
+  const qNum = STATE.currentQuestion + 1
+  const panel = document.getElementById('questionPanel')
 
   sendToPhone({
     type: 'question', planet: planet.name, qNum, total: 3,
@@ -83,7 +79,6 @@ function showQuestion() {
   const useSensor = qData.type === 'sensor' && phoneConnected
 
   if (qData.type === 'mc' || !useSensor) {
-    // Multiple choice (or sensor fallback when no phone)
     const q = qData.type === 'sensor'
       ? { q: qData.fallbackQ, choices: qData.fallbackChoices, answer: qData.fallbackAnswer, explain: qData.explain }
       : qData
@@ -94,20 +89,20 @@ function showQuestion() {
     })
     html += `</div>`
     if (qData.type === 'sensor' && !phoneConnected) {
-      html += `<div class="phone-indicator">📱 No phone — using text fallback</div>`
+      html += `<div class="phone-indicator">☏ No phone — using text fallback</div>`
     }
     panel.innerHTML = html
     showOverlay('questionOverlay')
     attachMC(q.answer, meta)
   } else {
-    // Sensor challenge
+    // sensors
     html += `<div class="question-text">${qData.q}</div>`
     html += `<div class="sensor-zone">`
-    html += `  <div class="sensor-label">📱 PHONE ${qData.sensor.toUpperCase()} READING</div>`
+    html += `  <div class="sensor-label">☏ PHONE ${qData.sensor.toUpperCase()} READING</div>`
     html += `  <div class="sensor-value" id="sensorVal">Waiting for phone...</div>`
     html += `  <div class="sensor-instruction">Move your phone as instructed above.</div>`
     html += `  <div class="progress-outer"><div class="progress-inner" id="sensorProg"></div></div>`
-    html += `  <div class="phone-indicator connected">📱 Phone streaming sensor data</div>`
+    html += `  <div class="phone-indicator connected">☏ Phone streaming sensor data</div>`
     html += `</div>`
     panel.innerHTML = html
     showOverlay('questionOverlay')
@@ -184,7 +179,7 @@ function handleCorrect(meta) {
   updateHUD()
   const qData = QUESTIONS[STATE.currentPlanet][STATE.currentQuestion]
   const panel = document.getElementById('questionPanel')
-  panel.innerHTML += `<div class="result-msg correct">✅ Correct! +O₂ restored.<br><br>${qData.explain}</div>`
+  panel.innerHTML += `<div class="result-msg correct">✓ Correct! +O₂ restored.<br><br>${qData.explain}</div>`
   const label = STATE.currentQuestion < 2
     ? 'Next Question'
     : (STATE.currentPlanet < 8 ? 'Travel to ' + PLANETS[STATE.currentPlanet + 1].name : 'See Results')
@@ -210,7 +205,7 @@ function handleWrong(meta) {
   }
   const qData = QUESTIONS[STATE.currentPlanet][STATE.currentQuestion]
   const panel = document.getElementById('questionPanel')
-  panel.innerHTML += `<div class="result-msg wrong">❌ Wrong! O₂ −${meta.o2Penalty}%.<br><br>${qData.explain}</div>`
+  panel.innerHTML += `<div class="result-msg wrong">✘ Wrong! O₂ −${meta.o2Penalty}%.<br><br>${qData.explain}</div>`
   const label = STATE.currentQuestion < 2
     ? 'Next Question'
     : (STATE.currentPlanet < 8 ? 'Travel to ' + PLANETS[STATE.currentPlanet + 1].name : 'See Results')
@@ -250,12 +245,12 @@ function showDeath(cause) {
   const p     = PLANETS[STATE.currentPlanet]
   const panel = document.getElementById('deathPanel')
   if (cause === 'frozen') {
-    panel.innerHTML = `<h2>❄️ FROZEN SOLID</h2>
+    panel.innerHTML = `<h2>❆ FROZEN SOLID</h2>
       <p>Pluto's −230°C cold claims another explorer.</p>
       <p style="color:#6a8ccc;margin-top:16px">Score: ${STATE.score} · Reached: ${p.name}</p>
       <button class="btn-primary" onclick="location.reload()">Try Again</button>`
   } else {
-    panel.innerHTML = `<h2>💀 OXYGEN DEPLETED</h2>
+    panel.innerHTML = `<h2>☠︎︎ OXYGEN DEPLETED</h2>
       <p>Life support failed near ${p.name}.</p>
       <p style="color:#6a8ccc;margin-top:16px">Score: ${STATE.score} · Final O₂: 0%</p>
       <button class="btn-primary" onclick="location.reload()">Try Again</button>`
@@ -266,7 +261,7 @@ function showDeath(cause) {
 function showWin() {
   const grade = STATE.oxygen > 75 ? 'S' : STATE.oxygen > 50 ? 'A' : STATE.oxygen > 25 ? 'B' : 'C'
   const panel = document.getElementById('winPanel')
-  panel.innerHTML = `<h1>🎉 Mission Complete!</h1>
+  panel.innerHTML = `<h1>♛ Mission Complete!</h1>
     <p style="color:#b0c4e8;font-size:1.1em">You traversed the entire Solar System!</p>
     <p style="color:#8bb4ff;font-size:1.3em;margin:16px 0">Score: ${STATE.score} · Grade: ${grade}</p>
     <p style="color:#6a8ccc">Final O₂: ${Math.round(STATE.oxygen)}%</p>
@@ -275,7 +270,7 @@ function showWin() {
   sendToPhone({ type: 'win', score: STATE.score, grade })
 }
 
-// ─── START BUTTONS ─────────────────────────────────────────────────────────────
+// start buttons
 document.getElementById('startBtn').onclick = () => {
   hideOverlays()
   document.getElementById('hud').style.display = 'flex'
@@ -290,18 +285,19 @@ document.getElementById('skipBtn').onclick = () => {
   travelTo(0)
 }
 
-// Display room code from peer.js
+// room code
 document.getElementById('roomCode').textContent = ROOM_CODE
 
-// ─── KAPLAY SCENE ──────────────────────────────────────────────────────────────
+// KAPLAY scene
+
 scene("space", () => {
   // Compute planet Y offsets now that height() is available
   planetYOffsets = PLANETS.map(() => (Math.random() - 0.5) * 40)
 
   // Place ship at the Sun to start; it will travel to Mercury when the game begins
-  shipY      = height() * 0.52
+  shipY = height() * 0.52
   shipTargetY = shipY
-  camLeft    = shipX - width() * 0.3
+  camLeft = shipX - width() * 0.3
 
   onUpdate(() => {
     engineFlicker += dt() * 3
@@ -310,7 +306,7 @@ scene("space", () => {
     if (shipTraveling) {
       const dx = shipTargetX - shipX
       const dy = shipTargetY - shipY
-      const d  = Math.sqrt(dx * dx + dy * dy)
+      const d = Math.sqrt(dx * dx + dy * dy)
       if (d < 2) {
         shipX = shipTargetX
         shipY = shipTargetY
@@ -330,52 +326,52 @@ scene("space", () => {
   })
 
   onDraw(() => {
-    const t       = time()
+    const t = time()
     const screenW = width()
     const screenH = height()
-    const sunY    = screenH * 0.52
+    const sunY = screenH * 0.52
 
-    // ── Stars (parallax + horizontal wrapping) ──────────────────
+    // stars
     STARS.forEach(s => {
       let sx = s.x - camLeft * 0.15
       sx = ((sx % (screenW + 200)) + (screenW + 200)) % (screenW + 200) - 100
-      const sy    = s.y % screenH
+      const sy = s.y % screenH
       const alpha = Math.max(0.1, s.bright + Math.sin(t * s.twinkle * 6 + s.x) * 0.15)
       drawCircle({
-        pos:     vec2(camLeft + sx, sy),
-        radius:  s.r,
-        color:   rgb(200, 220, 255),
+        pos: vec2(camLeft + sx, sy),
+        radius: s.r,
+        color:rgb(200, 220, 255),
         opacity: alpha,
       })
     })
 
-    // ── Sun ─────────────────────────────────────────────────────
+    // Sun Draw Options
     // Outer glow
-    drawCircle({ pos: vec2(40, sunY), radius: 90, color: rgb(255, 140, 20), opacity: 0.10 })
-    drawCircle({ pos: vec2(40, sunY), radius: 65, color: rgb(255, 170, 30), opacity: 0.18 })
+    drawCircle({ pos: vec2(40, sunY), radius: 120, color: rgb(255, 140, 20), opacity: 0.10 })
+    drawCircle({ pos: vec2(40, sunY), radius: 95, color: rgb(255, 170, 30), opacity: 0.18 })
     // Core
-    drawCircle({ pos: vec2(40, sunY), radius: 50, color: rgb(255, 200, 50) })
+    drawCircle({ pos: vec2(40, sunY), radius: 70, color: rgb(255, 200, 50) })
     // Highlight
-    drawCircle({ pos: vec2(25, sunY - 15), radius: 18, color: rgb(255, 245, 180), opacity: 0.30 })
+    drawCircle({ pos: vec2(22, sunY - 28), radius: 30, color: rgb(255, 245, 180), opacity: 0.30 })
 
-    // ── Orbit path + Planets ────────────────────────────────────
-    PLANETS.forEach((p, i) => {
-      const px          = pX(i)
-      const py          = pY(i)
+    // orbit paths and planets
+    PLANETS.forEach((p, i) => { // +15 +25
+      const px = pX(i)
+      const py = pY(i)
       const orbitStartX = i === 0 ? 40 : pX(i - 1)
 
       // Orbit dashes
       for (let dx = orbitStartX; dx < px; dx += 10) {
         drawRect({
-          pos:    vec2(dx, sunY - 0.5),
-          width:  3,
+          pos: vec2(dx, sunY - 0.5),
+          width: 3,
           height: 1.5,
-          color:  rgb(50, 60, 90),
+          color:rgb(50, 60, 90),
           opacity: 0.30,
         })
       }
 
-      // Saturn ring (behind planet — drawn before the circle)
+      // Saturn ring
       if (p.ring) {
         drawLine({ p1: vec2(px - p.r * 2.3, py + 3), p2: vec2(px + p.r * 2.3, py + 3), width: 7, color: rgb(190, 180, 130), opacity: 0.28 })
         drawLine({ p1: vec2(px - p.r * 2.1, py),     p2: vec2(px + p.r * 2.1, py),     width: 5, color: rgb(210, 200, 150), opacity: 0.40 })
@@ -390,14 +386,14 @@ scene("space", () => {
 
       // Planet name label
       drawText({
-        text:   p.name,
-        pos:    vec2(px - p.name.length * 3, py + p.r + 16),
-        size:   11,
-        color:  rgb(120, 150, 190),
+        text: p.name,
+        pos: vec2(px - p.name.length * 3, py + p.r + 16),
+        size: 11,
+        color:rgb(120, 150, 190),
       })
     })
 
-    // ── Ship ────────────────────────────────────────────────────
+    // Ship
     const eg = 0.4 + Math.sin(engineFlicker * 5) * 0.25
     // Engine glow (behind ship)
     drawCircle({ pos: vec2(shipX - 16, shipY), radius: 6,  color: rgb(64, 128, 255), opacity: eg })

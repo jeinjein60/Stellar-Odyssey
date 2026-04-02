@@ -1,5 +1,3 @@
-// peer.js — PeerJS connection between computer (host) and phone (controller)
-
 function generateCode() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
   let code = ''
@@ -24,12 +22,12 @@ function initPeer() {
     conn = c
     conn.on('open', () => {
       phoneConnected = true
-      document.getElementById('connStatus').textContent = '📱 Phone connected!'
+      document.getElementById('connStatus').textContent = '☏ Phone connected!'
       document.getElementById('connStatus').classList.add('connected')
       document.getElementById('startBtn').style.opacity = '1'
       document.getElementById('startBtn').style.pointerEvents = 'auto'
       document.getElementById('startBtn').textContent = 'Launch Mission'
-      document.getElementById('hudPhone').textContent = '📱 Connected'
+      document.getElementById('hudPhone').textContent = '☏ Connected'
       document.getElementById('hudPhone').style.opacity = '1'
       document.getElementById('hudPhone').style.color = '#5eff8a'
       sendToPhone({ type: 'status', text: 'Connected! Waiting for launch...' })
@@ -46,7 +44,7 @@ function initPeer() {
 
     conn.on('close', () => {
       phoneConnected = false
-      document.getElementById('hudPhone').textContent = '📱 Disconnected'
+      document.getElementById('hudPhone').textContent = '☏ Disconnected'
       document.getElementById('hudPhone').style.color = '#ff6040'
     })
   })
