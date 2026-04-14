@@ -65,7 +65,7 @@ function mercuryGravitySlider(el) {
     if (escapes) {
       insight.textContent = `At ${speed} km/s the molecule exceeds Mercury's escape velocity (4.3 km/s) and flies off into space!`;
     } else {
-      insight.textContent = `At ${speed} km/s the molecule doesn't reach escape velocity. Mercury's gravity pulls it back — but barely. On Earth you'd need 11.2 km/s!`;
+      insight.textContent = `At ${speed} km/s the molecule doesn't reach escape velocity. Mercury's gravity pulls it back - but barely. On Earth you'd need 11.2 km/s!`;
     }
 
     setTimeout(() => {
@@ -101,7 +101,7 @@ function mercuryEscapeVelocity(el) {
       <h4>🚀 Escape Velocity Comparison</h4>
       <p class="sim-desc">Compare how fast a molecule must move to escape each body's gravity.</p>
       <div class="ev-chart">${bars}</div>
-      <p class="sim-insight">Notice: Mercury's escape velocity is only 4.3 km/s — gas molecules heated by the Sun easily reach this speed and fly away! That's why Mercury can't hold an atmosphere.</p>
+      <p class="sim-insight">Notice: Mercury's escape velocity is only 4.3 km/s - gas molecules heated by the Sun easily reach this speed and fly away! That's why Mercury can't hold an atmosphere.</p>
     </div>
   `;
 }
@@ -139,13 +139,13 @@ function mercurySolarWind(el) {
       atmo.style.opacity = '0.1';
       atmo.style.transform = 'scale(0.9)';
       particles.classList.add('active');
-      result.textContent = '💨 Solar wind active — atmosphere being stripped away!';
+      result.textContent = '💨 Solar wind active - atmosphere being stripped away!';
       result.style.color = '#ef5350';
     } else {
       atmo.style.opacity = '0.6';
       atmo.style.transform = 'scale(1.1)';
       particles.classList.remove('active');
-      result.textContent = '🛡️ Solar wind off — thin atmosphere slowly builds up.';
+      result.textContent = '🛡️ Solar wind off - thin atmosphere slowly builds up.';
       result.style.color = '#66bb6a';
     }
   }
@@ -199,10 +199,10 @@ function venusAtmosphereLayers(el) {
       layersDiv.appendChild(layer);
     }
 
-    if (layers === 0) insight.textContent = "No atmosphere — like Mercury! Heat escapes freely into space. Surface is cold at night.";
-    else if (layers <= 3) insight.textContent = "A thin atmosphere traps some heat — like Mars. Mild greenhouse effect.";
+    if (layers === 0) insight.textContent = "No atmosphere - like Mercury! Heat escapes freely into space. Surface is cold at night.";
+    else if (layers <= 3) insight.textContent = "A thin atmosphere traps some heat - like Mars. Mild greenhouse effect.";
     else if (layers <= 6) insight.textContent = "Getting warmer! This is past Earth-level greenhouse. CO₂ is really stacking up.";
-    else insight.textContent = "🔥 RUNAWAY GREENHOUSE! This is Venus — so much CO₂ that almost no heat escapes. 465°C surface!";
+    else insight.textContent = "🔥 RUNAWAY GREENHOUSE! This is Venus - so much CO₂ that almost no heat escapes. 465°C surface!";
   }
 
   slider.addEventListener('input', update);

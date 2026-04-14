@@ -6,7 +6,7 @@
 export const planetFacts = {
   mercury: {
     subtitle: "The Swift Messenger",
-    overview: "Mercury is the smallest planet and closest to the Sun. It whips around its orbit in just 88 Earth days — the fastest of any planet.",
+    overview: "Mercury is the smallest planet and closest to the Sun. It whips around its orbit in just 88 Earth days making it the fastest of any planet.",
     stats: [
       { label: "Distance from Sun", value: "57.9 million km", icon: "☀️" },
       { label: "Diameter", value: "4,880 km", note: "38% of Earth", icon: "📏" },
@@ -19,9 +19,9 @@ export const planetFacts = {
       { label: "Magnetic Field", value: "~1% of Earth's", icon: "🧲" },
     ],
     keyContext: [
-      "Mercury has almost NO atmosphere — just traces of sodium and oxygen captured temporarily from solar wind.",
+      "Mercury has almost NO atmosphere, with just traces of sodium and oxygen captured temporarily from solar wind.",
       "Despite being closest to the Sun, it's NOT the hottest planet. That's Venus.",
-      "The temperature swing between day and night is over 600°C — the largest in the solar system.",
+      "The temperature swing between day and night is over 600°C, which is the largest in the solar system.",
       "Mercury's low mass means low gravity, which directly affects how easily gases can escape."
     ],
     thinkAbout: "Why can't Mercury hold onto an atmosphere? Think about the relationship between gravity, temperature, and gas molecules."
@@ -29,7 +29,7 @@ export const planetFacts = {
 
   venus: {
     subtitle: "Earth's Evil Twin",
-    overview: "Venus is nearly the same size as Earth but has a radically different atmosphere — a crushing, toxic blanket of CO₂ that makes it the hottest planet in the solar system.",
+    overview: "Venus is nearly the same size as Earth but has a radically different atmosphere. A crushing, toxic blanket of CO₂ that makes it the hottest planet in the solar system.",
     stats: [
       { label: "Distance from Sun", value: "108.2 million km", note: "1.87× farther than Mercury", icon: "☀️" },
       { label: "Diameter", value: "12,104 km", note: "95% of Earth", icon: "📏" },
@@ -42,8 +42,8 @@ export const planetFacts = {
     ],
     keyContext: [
       "Venus is FARTHER from the Sun than Mercury, yet its surface is 35°C HOTTER.",
-      "Venus's atmosphere is 96.5% carbon dioxide — a powerful greenhouse gas.",
-      "The atmospheric pressure on Venus is 92× Earth's — like being 900m underwater.",
+      "Venus's atmosphere is 96.5% carbon dioxide and is a powerful greenhouse gas.",
+      "The atmospheric pressure on Venus is 92× Earth's, like being 900m underwater.",
       "Day and night temperatures are almost identical on Venus. Something is distributing and trapping heat evenly."
     ],
     thinkAbout: "Mercury is closer to the Sun but cooler. Venus has a thick CO₂ atmosphere. What is CO₂ doing to the heat?"
@@ -64,7 +64,7 @@ export const planetFacts = {
     keyContext: [
       "Tidal force follows an INVERSE CUBE law (1/d³), not the regular inverse square law of gravity (1/d²).",
       "This means tides are MUCH more sensitive to distance changes than regular gravitational pull.",
-      "The Moon is slowly moving away from Earth at 3.8 cm per year — tides are getting weaker over millions of years.",
+      "The Moon is slowly moving away from Earth at 3.8 cm per year, the tides are getting weaker over millions of years.",
       "About 40% of the world's population lives within 100km of a coastline."
     ],
     thinkAbout: "If distance is halved, normal gravity gets 4× stronger (2²). But tidal force uses the CUBE. What's 2³?"
@@ -86,7 +86,7 @@ export const planetFacts = {
     ],
     keyContext: [
       "Mars has an atmosphere, but it's only 0.6% as dense as Earth's — too thin for liquid water to exist on the surface.",
-      "The soil contains perchlorates (ClO₄⁻) at 0.5-1% — toxic to humans and plants even at low concentrations.",
+      "The soil contains perchlorates (ClO₄⁻) at 0.5-1% which istoxic to humans and plants even at low concentrations.",
       "Mars has no global magnetic field and no ozone layer, so UV radiation hits the surface at lethal levels.",
       "Water exists as ice at the poles and underground, but the low pressure means it sublimates (ice → gas) rather than melting."
     ],
@@ -109,7 +109,7 @@ export const planetFacts = {
     ],
     keyContext: [
       "Jupiter has NO solid surface — there's no land for storms to make landfall and lose energy to friction.",
-      "Jupiter radiates 1.7× more energy than it receives from the Sun — it has a powerful internal heat source.",
+      "Jupiter radiates 1.7× more energy than it receives from the Sun, it has a powerful internal heat source.",
       "A day on Jupiter is only ~10 hours, creating extreme Coriolis forces that stabilize rotating storm systems.",
       "Earth hurricanes die when they hit land or lose their warm ocean heat source. Jupiter has neither limitation."
     ],
@@ -118,7 +118,7 @@ export const planetFacts = {
 
   saturn: {
     subtitle: "The Ringed Beauty",
-    overview: "Saturn is famous for its spectacular ring system — thousands of ringlets made of ice and rock orbiting within a critical gravitational boundary.",
+    overview: "Saturn is famous for its spectacular ring system with thousands of ringlets made of ice and rock orbiting within a critical gravitational boundary.",
     stats: [
       { label: "Diameter", value: "116,460 km", note: "9.5× Earth", icon: "📏" },
       { label: "Ring Span", value: "282,000 km wide", note: "But only ~10m thick!", icon: "🪐" },
@@ -130,17 +130,17 @@ export const planetFacts = {
       { label: "Rings Inside Roche Limit?", value: "Yes — entirely", icon: "📐" },
     ],
     keyContext: [
-      "ALL of Saturn's rings orbit INSIDE the Roche limit — the distance where tidal forces overpower self-gravity.",
-      "ALL of Saturn's 146+ moons orbit OUTSIDE the Roche limit — where self-gravity can hold objects together.",
+      "ALL of Saturn's rings orbit INSIDE the Roche limit, the distance where tidal forces overpower self-gravity.",
+      "ALL of Saturn's 146+ moons orbit OUTSIDE the Roche limit where self-gravity can hold objects together.",
       "The Roche limit is where two forces compete: the object's self-gravity (pulling together) vs Saturn's tidal forces (pulling apart).",
-      "The rings are incredibly thin — if Saturn were the size of a football field, the rings would be thinner than a razor blade."
+      "The rings are incredibly thin, if Saturn were the size of a football field, the rings would be thinner than a razor blade."
     ],
     thinkAbout: "Rings inside a boundary, moons outside it. What is this boundary, and what two forces determine it?"
   },
 
   uranus: {
     subtitle: "The Sideways Planet",
-    overview: "Uranus is an ice giant that rotates on its side — a 98° axial tilt that makes it unique in the solar system. Something catastrophic must have happened.",
+    overview: "Uranus is an ice giant that rotates on its side, a 98° axial tilt that makes it unique in the solar system. Something catastrophic must have happened.",
     stats: [
       { label: "Diameter", value: "50,724 km", note: "4× Earth", icon: "📏" },
       { label: "Axial Tilt", value: "97.77°", note: "Essentially rolling on its side", icon: "📐" },
@@ -152,17 +152,17 @@ export const planetFacts = {
       { label: "Solar System Age", value: "~4.6 billion years", note: "Chaotic early period", icon: "⏳" },
     ],
     keyContext: [
-      "Most planets spin roughly upright (within ~30° tilt). Uranus spins at 98° — practically on its side.",
-      "Its magnetic field is also tilted 59° from the rotation axis — another sign of a violent history.",
-      "The early solar system (first ~500 million years) was chaotic — dozens of protoplanets collided regularly.",
-      "Angular momentum is CONSERVED — once an object's spin axis changes, it stays changed unless another force acts on it."
+      "Most planets spin roughly upright (within ~30° tilt). Uranus spins at 98° on its side.",
+      "Its magnetic field is also tilted 59° from the rotation axis, another sign of a violent history.",
+      "The early solar system (first ~500 million years) was chaotic with dozens of protoplanets colliding regularly.",
+      "Angular momentum is CONSERVED. Once an object's spin axis changes, it stays changed unless another force acts on it."
     ],
     thinkAbout: "What could knock an entire planet onto its side? And what law of physics explains why it stayed that way?"
   },
 
   neptune: {
     subtitle: "The Windswept World",
-    overview: "Neptune is the farthest planet, receiving very little sunlight — yet it has the fastest winds in the entire solar system. A thermodynamic paradox.",
+    overview: "Neptune is the farthest planet, receiving very little sunlight. Yet it has the fastest winds in the entire solar system. A thermodynamic paradox.",
     stats: [
       { label: "Distance from Sun", value: "4.5 billion km", note: "30× Earth's distance", icon: "☀️" },
       { label: "Solar Energy Received", value: "1/900th of Earth's", note: "Very dark and cold", icon: "💡" },
@@ -174,10 +174,10 @@ export const planetFacts = {
       { label: "Atmosphere", value: "H₂, He, methane", note: "Methane = blue color", icon: "🌫️" },
     ],
     keyContext: [
-      "Neptune radiates 2.61× more energy than it receives from the Sun — it has a massive internal heat source.",
+      "Neptune radiates 2.61× more energy than it receives from the Sun. It has a massive internal heat source.",
       "This extra energy comes from gravitational contraction (Kelvin-Helmholtz mechanism) and possibly methane compressed into diamonds.",
-      "Neptune has no solid surface — once winds start, there's almost zero friction to slow them down.",
-      "Less solar input means fewer competing weather patterns — the atmosphere can organize into powerful, uniform circulation."
+      "Neptune has no solid surface, once winds start, there's almost zero friction to slow them down.",
+      "Less solar input means fewer competing weather patterns, the atmosphere can organize into powerful, uniform circulation."
     ],
     thinkAbout: "Neptune gets almost no solar energy yet has 2,100 km/h winds. Where is the energy coming from, and why doesn't friction stop it?"
   }
