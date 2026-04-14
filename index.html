@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solar System Lab</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/src/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ========== STARS BACKGROUND ========== -->
+  <div id="stars-bg"></div>
+
+  <!-- ========== TITLE SCREEN ========== -->
+  <div id="screen-title" class="screen active">
+    <div class="title-content">
+      <div class="title-rocket">🚀</div>
+      <h1 class="title-heading">Solar System <span class="highlight">Lab</span></h1>
+      <p class="title-sub">Travel the solar system. Ask questions. Form hypotheses. Learn real science.</p>
+      <div class="title-planets-row">
+        <span class="title-planet" style="--c:#b0b0b0">🪨</span>
+        <span class="title-planet" style="--c:#e8a735">🌋</span>
+        <span class="title-planet" style="--c:#4a90d9">🌍</span>
+        <span class="title-planet" style="--c:#d44a2e">🔴</span>
+        <span class="title-planet" style="--c:#d4915e">🌕</span>
+        <span class="title-planet" style="--c:#e8d282">🪐</span>
+        <span class="title-planet" style="--c:#7de8e8">🫧</span>
+        <span class="title-planet" style="--c:#4466ee">🌑</span>
+      </div>
+      <button id="btn-start" class="btn-primary">Begin Mission</button>
+      <p class="title-hint">8 planets · 8 experiments · 1 astronaut (you)</p>
+    </div>
+  </div>
+
+  <!-- ========== PLANET INTRO / TRANSITION SCREEN ========== -->
+  <div id="screen-transition" class="screen">
+    <div class="transition-content">
+      <div class="transition-travelling">
+        <div class="rocket-fly">🚀</div>
+        <p class="travelling-text">Travelling to <span id="trans-planet-name">Mercury</span>...</p>
+      </div>
+      <div class="transition-arrive hidden">
+        <div id="trans-planet-avatar" class="planet-avatar-large"></div>
+        <h2 id="trans-greeting" class="transition-greeting"></h2>
+        <div class="transition-meta">
+          <span class="meta-badge" id="trans-topic"></span>
+          <span class="meta-badge" id="trans-difficulty"></span>
+          <span class="meta-badge" id="trans-attempts"></span>
+          <span class="meta-badge">Hidden tools to discover</span>
+        </div>
+        <button id="btn-view-briefing" class="btn-primary">View Science Briefing</button>
+      </div>
+
+      <!-- SCIENCE BRIEFING (shown after arrival, before entering lab) -->
+      <div class="briefing-screen hidden" id="briefing-screen">
+        <div class="briefing-card">
+          <div class="briefing-top">
+            <div id="briefing-avatar" class="planet-avatar-small"></div>
+            <div class="briefing-title-area">
+              <h2 id="briefing-name">Mercury</h2>
+              <p id="briefing-subtitle" class="briefing-subtitle">The Swift Messenger</p>
+            </div>
+          </div>
+          <p id="briefing-overview" class="briefing-overview"></p>
+
+          <h3 class="briefing-section-title">Key Data</h3>
+          <div id="briefing-stats" class="briefing-stats"></div>
+
+          <h3 class="briefing-section-title">Important Context</h3>
+          <ul id="briefing-context" class="briefing-context-list"></ul>
+
+          <div class="briefing-think-box">
+            <h3>Think About This...</h3>
+            <p id="briefing-think"></p>
+          </div>
+
+          <button id="btn-enter-lab" class="btn-primary briefing-enter-btn">I'm Ready - Enter the Lab</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MAIN GAME SCREEN ========== -->
+  <div id="screen-game" class="screen">
+
+    <!-- Top status bar -->
+    <header class="game-header">
+      <div class="header-left">
+        <span class="header-planet-dot" id="header-dot"></span>
+        <span class="header-planet-name" id="header-name">Mercury</span>
+        <span class="header-level" id="header-level">Level 1 / 8</span>
+      </div>
+      <div class="header-right">
+        <div class="stat-box">
+          <span class="stat-label">Questions Left</span>
+          <span class="stat-value" id="stat-attempts">10</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Score</span>
+          <span class="stat-value" id="stat-score">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Lab Tools</span>
+          <span class="stat-value" id="header-unlock-badge" style="color:#a78bfa">🧪 —</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main game area -->
+    <div class="game-body">
+
+      <!-- LEFT: Planet teacher panel -->
+      <aside class="teacher-panel">
+        <div class="teacher-avatar-wrap">
+          <div id="teacher-avatar" class="planet-avatar"></div>
+          <div class="teacher-name-tag" id="teacher-name">Mercury</div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="teacher-tabs">
+          <button class="teacher-tab active" data-tab="experiment">Experiment</button>
+          <button class="teacher-tab" data-tab="facts">Planet Data</button>
+        </div>
+
+        <!-- Tab: Experiment info -->
+        <div class="teacher-tab-content active" id="tab-experiment">
+          <div class="teacher-info-card">
+            <div class="info-row">
+              <span class="info-label">Lab Topic</span>
+              <span class="info-value" id="info-topic">Escape Velocity</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Difficulty</span>
+              <div class="difficulty-dots" id="info-difficulty"></div>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Experiment</span>
+              <p class="info-question" id="info-question"></p>
+            </div>
+          </div>
+          <button id="btn-hint" class="btn-secondary">Ask for a Hint</button>
+        </div>
+
+        <!-- Tab: Planet facts (reference during gameplay) -->
+        <div class="teacher-tab-content" id="tab-facts">
+          <div class="sidebar-facts-card" id="sidebar-facts">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </aside>
+
+      <!-- RIGHT: Chat + Simulation area -->
+      <main class="chat-sim-wrapper">
+        <!-- Simulation Panel (collapsible, right side of chat) -->
+        <div class="sim-panel-wrapper">
+          <div id="sim-panel" class="sim-panel">
+            <!-- Dynamically rendered by main.js -->
+          </div>
+        </div>
+
+        <!-- Chat area -->
+        <div class="chat-area">
+        <div class="chat-messages" id="chat-messages">
+          <!-- Messages render here -->
+        </div>
+
+        <div class="chat-input-area">
+          <div class="input-row">
+            <div class="astronaut-icon">👨‍🚀</div>
+            <input
+              type="text"
+              id="chat-input"
+              placeholder="Ask a question to form your hypothesis..."
+              autocomplete="off"
+            />
+            <button id="btn-send" class="btn-send" title="Send question">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+          <div class="action-row">
+            <button id="btn-submit-answer" class="btn-answer">Submit My Answer</button>
+            <button id="btn-give-up" class="btn-giveup">Give Up & Move On</button>
+          </div>
+        </div> <!-- end chat-input-area -->
+        </div> <!-- end chat-area -->
+      </main>
+    </div>
+  </div>
+
+  <!-- ========== ANSWER SUBMISSION MODAL ========== -->
+  <div id="modal-answer" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+      <h3>Submit Your Hypothesis</h3>
+      <p class="modal-question" id="modal-question"></p>
+      <textarea id="answer-input" rows="4" placeholder="Write your answer / hypothesis here..."></textarea>
+      <div class="modal-actions">
+        <button id="btn-cancel-answer" class="btn-secondary">Cancel</button>
+        <button id="btn-confirm-answer" class="btn-primary">Submit Answer 🚀</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== RESULT MODAL ========== -->
+  <div id="modal-result" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card result-card">
+      <div class="result-icon" id="result-icon">✅</div>
+      <h3 id="result-title">Correct!</h3>
+      <p id="result-feedback"></p>
+      <div class="result-meta" id="result-meta"></div>
+      <button id="btn-next-planet" class="btn-primary">Next Planet →</button>
+    </div>
+  </div>
+
+  <!-- ========== GAME OVER SCREEN ========== -->
+  <div id="screen-end" class="screen">
+    <div class="end-content">
+      <div class="end-trophy">🏆</div>
+      <h1>Mission Complete!</h1>
+      <p class="end-score">Final Score: <span id="end-score">0</span> / 8</p>
+      <div class="end-summary" id="end-summary"></div>
+      <button id="btn-restart" class="btn-primary">Restart Mission 🚀</button>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
