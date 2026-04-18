@@ -1,8 +1,3 @@
-// ============================================================
-// tests/game.test.js — Test 1: Game runs correctly
-// Verifies the core state machine, attempt logic, and scoring.
-// ============================================================
-
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   state,
@@ -25,7 +20,7 @@ import { planets } from '../src/planets.js';
 describe('Test 1 — Game runs correctly', () => {
   beforeEach(() => resetGame());
 
-  // --- Startup ---
+  // tests for starting game and resetting, if one refresges game
 
   it('startGame sets 10 attempts, score 0, planet 0, screen transition', () => {
     startGame();
@@ -48,7 +43,7 @@ describe('Test 1 — Game runs correctly', () => {
     expect(state.results).toHaveLength(0);
   });
 
-  // --- Attempts ---
+  // attempts and hints test cases
 
   it('useAttempt decrements attempts by 1 and returns true', () => {
     startGame();
@@ -81,7 +76,7 @@ describe('Test 1 — Game runs correctly', () => {
     expect(useHint()).toBeNull();
   });
 
-  // --- Scoring ---
+  // scoring tests
 
   it('recordResult(true) increments score and stores correct result', () => {
     startGame();
@@ -99,29 +94,29 @@ describe('Test 1 — Game runs correctly', () => {
     expect(state.results[0].correct).toBe(false);
   });
 
-  // --- Attempt adjustment on planet advance ---
+  // testes for advancing planets
 
-  it('correct answer → next planet starts with 11 attempts (10 + 1)', () => {
+  it('correct answer -> next planet starts with 11 attempts (10 + 1)', () => {
     startGame();
     recordResult(true);
     advanceToNextPlanet();
     expect(state.attempts).toBe(11);
   });
 
-  it('wrong answer → next planet starts with 9 attempts (10 - 1)', () => {
+  it('wrong answer -> next planet starts with 9 attempts (10 - 1)', () => {
     startGame();
     recordResult(false);
     advanceToNextPlanet();
     expect(state.attempts).toBe(9);
   });
 
-  it('attempts always reset from BASE 10 — not cumulative across planets', () => {
+  it('attempts always reset from BASE 10 - not cumulative across planets', () => {
     startGame();
-    // Planet 1 correct → 11
+    // Planet 1 correct -> 11
     recordResult(true);
     advanceToNextPlanet();
     expect(state.attempts).toBe(11);
-    // Planet 2 wrong → should be 10-1=9, not 11-1=10
+    // Planet 2 wrong -> should be 10-1=9, not 11-1=10
     recordResult(false);
     advanceToNextPlanet();
     expect(state.attempts).toBe(9);
@@ -135,7 +130,7 @@ describe('Test 1 — Game runs correctly', () => {
     expect(state.attempts).toBeGreaterThanOrEqual(3);
   });
 
-  // --- Navigation ---
+  // traveling test cases
 
   it('isLastPlanet returns false at planet 0', () => {
     startGame();
@@ -165,7 +160,7 @@ describe('Test 1 — Game runs correctly', () => {
     expect(state.currentPlanetIndex).toBe(1);
   });
 
-  // --- Getters ---
+  // currentPlanet and getProgress test cases
 
   it('currentPlanet returns the planet at currentPlanetIndex', () => {
     startGame();
@@ -193,7 +188,7 @@ describe('Test 1 — Game runs correctly', () => {
     expect(messages[1].type).toBe('system');
   });
 
-  // --- AI message building ---
+  // ai message building and recording test cases
 
   it('buildAIMessages adds user message to history and prepends system prompt', () => {
     startGame();
@@ -212,7 +207,7 @@ describe('Test 1 — Game runs correctly', () => {
     expect(state.chatHistory[0]).toEqual({ role: 'assistant', content: 'Interesting question about gravity!' });
   });
 
-  // --- Final stats ---
+  // final stats test case
 
   it('getFinalStats returns score, total, results, and percentage', () => {
     startGame();

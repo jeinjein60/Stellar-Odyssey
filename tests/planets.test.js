@@ -1,9 +1,3 @@
-// ============================================================
-// tests/planets.test.js — Test 4: All planet facts load
-// Validates that every planet and its facts data has all
-// required fields populated with meaningful values.
-// ============================================================
-
 import { describe, it, expect } from 'vitest';
 import { planets } from '../src/planets.js';
 import { planetFacts } from '../src/planet-facts.js';
@@ -13,8 +7,7 @@ const REQUIRED_PLANET_FIELDS = ['id', 'name', 'emoji', 'color', 'greeting', 'exp
 const REQUIRED_EXPERIMENT_FIELDS = ['question', 'hint', 'keyConcepts', 'acceptableAnswer', 'difficulty'];
 const REQUIRED_FACTS_FIELDS = ['subtitle', 'overview', 'stats', 'keyContext', 'thinkAbout'];
 
-// ==================== planets.js ====================
-
+// tests for planets.js data structure and content
 describe('Test 4 — Planet data (planets.js)', () => {
   it('exports exactly 8 planets', () => {
     expect(planets).toHaveLength(8);
@@ -68,7 +61,7 @@ describe('Test 4 — Planet data (planets.js)', () => {
   });
 });
 
-// ==================== planet-facts.js ====================
+// test cases for planet-facts.js data structure and content
 
 describe('Test 4 — Planet facts (planet-facts.js)', () => {
   it('planetFacts has entries for all 8 planets', () => {

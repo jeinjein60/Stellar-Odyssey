@@ -1,16 +1,9 @@
-// ============================================================
-// tests/screens.test.js — Test 3: All pages/screens can load
-// Uses jsdom (configured globally in vitest.config.js) to verify
-// each screen element exists and that showScreen() activates the
-// correct one. Also checks game state transitions hit every screen.
-// ============================================================
-
 import { describe, it, expect, beforeEach } from 'vitest';
 import { showScreen } from '../src/ui.js';
 import { state, startGame, resetGame, recordResult, advanceToNextPlanet } from '../src/game.js';
 import { planets } from '../src/planets.js';
 
-// Minimal DOM that mirrors the 4 screens in index.html
+// Helper function to set up a minimal DOM structure for testing screen transitions
 function setupDOM() {
   document.body.innerHTML = `
     <div id="screen-title"      class="screen active"></div>
@@ -26,7 +19,7 @@ describe('Test 3 — All screens/pages can load', () => {
     resetGame();
   });
 
-  // --- DOM elements exist ---
+  // DOM elements exist
 
   it('title screen DOM element exists', () => {
     expect(document.getElementById('screen-title')).not.toBeNull();
@@ -44,7 +37,7 @@ describe('Test 3 — All screens/pages can load', () => {
     expect(document.getElementById('screen-end')).not.toBeNull();
   });
 
-  // --- showScreen activates the right screen ---
+  // showScreen activates the right screen 
 
   it('showScreen("title") makes title screen active', () => {
     showScreen('title');
@@ -90,7 +83,7 @@ describe('Test 3 — All screens/pages can load', () => {
     });
   });
 
-  // --- Game state machine transitions through all screens ---
+  // game state machine transitions through all screens
 
   it('startGame transitions state to "transition" screen', () => {
     startGame();

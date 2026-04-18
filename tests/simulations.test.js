@@ -1,9 +1,3 @@
-// ============================================================
-// tests/simulations.test.js — Test 5: All simulation tools load and work
-// Verifies tool definitions, the keyword-unlock engine,
-// and that every renderer produces HTML output.
-// ============================================================
-
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   simulations,
@@ -31,7 +25,7 @@ const TOOLS_BY_PLANET = {
 
 const ALL_TOOL_IDS = Object.values(TOOLS_BY_PLANET).flat();
 
-// ==================== Tool data ====================
+// Tool data structure and content tests
 
 describe('Test 5 — Simulation tool data loads', () => {
   beforeEach(() => resetAllTools());
@@ -83,7 +77,7 @@ describe('Test 5 — Simulation tool data loads', () => {
   });
 });
 
-// ==================== Unlock engine ====================
+// Simulation unlock engine tests
 
 describe('Test 5 — Simulation unlock engine', () => {
   beforeEach(() => resetAllTools());
@@ -156,7 +150,7 @@ describe('Test 5 — Simulation unlock engine', () => {
   });
 
   it('each planet can unlock all 3 tools with the right keywords', () => {
-    // Pick one known keyword per tool and fire them all in one message
+    // if any of these keywords are present in the message, all 3 tools for that planet should unlock
     const triggerMessages = {
       mercury:  'gravity escape velocity solar wind',
       venus:    'atmosphere greenhouse co2 mercury compare',
@@ -172,14 +166,13 @@ describe('Test 5 — Simulation unlock engine', () => {
       resetTools(planetId);
       checkUnlocks(planetId, triggerMessages[planetId]);
       const { unlocked, total } = getUnlockedCount(planetId);
-      // At least 1 tool should unlock with these broad keywords
       expect(unlocked).toBeGreaterThan(0);
       expect(unlocked).toBeLessThanOrEqual(total);
     });
   });
 });
 
-// ==================== Renderers ====================
+// Simulation rendering tests
 
 describe('Test 5 — All 24 simulation renderers produce output', () => {
   let container;

@@ -1,0 +1,634 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for Stellar-Odyssey/src/planet-facts.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">Stellar-Odyssey/src</a> planet-facts.js</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>184/184</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/0</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/0</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>184/184</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line high'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a>
+<a name='L123'></a><a href='#L123'>123</a>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a>
+<a name='L137'></a><a href='#L137'>137</a>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a>
+<a name='L147'></a><a href='#L147'>147</a>
+<a name='L148'></a><a href='#L148'>148</a>
+<a name='L149'></a><a href='#L149'>149</a>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a>
+<a name='L152'></a><a href='#L152'>152</a>
+<a name='L153'></a><a href='#L153'>153</a>
+<a name='L154'></a><a href='#L154'>154</a>
+<a name='L155'></a><a href='#L155'>155</a>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a>
+<a name='L175'></a><a href='#L175'>175</a>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a>
+<a name='L178'></a><a href='#L178'>178</a>
+<a name='L179'></a><a href='#L179'>179</a>
+<a name='L180'></a><a href='#L180'>180</a>
+<a name='L181'></a><a href='#L181'>181</a>
+<a name='L182'></a><a href='#L182'>182</a>
+<a name='L183'></a><a href='#L183'>183</a>
+<a name='L184'></a><a href='#L184'>184</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">// ============================================================
+// src/planet-facts.js — Science briefing data for each planet
+// Context students need BEFORE tackling the lab question
+// ============================================================
+&nbsp;
+export const planetFacts = {
+  mercury: {
+    subtitle: "The Swift Messenger",
+    overview: "Mercury is the smallest planet and closest to the Sun. It whips around its orbit in just 88 Earth days making it the fastest of any planet.",
+    stats: [
+      { label: "Distance from Sun", value: "57.9 million km", icon: "☀️" },
+      { label: "Diameter", value: "4,880 km", note: "38% of Earth", icon: "📏" },
+      { label: "Mass", value: "3.3 × 10²³ kg", note: "5.5% of Earth", icon: "⚖️" },
+      { label: "Surface Gravity", value: "3.7 m/s²", note: "38% of Earth's 9.8", icon: "⬇️" },
+      { label: "Escape Velocity", value: "4.3 km/s", note: "vs Earth's 11.2 km/s", icon: "🚀" },
+      { label: "Atmosphere", value: "Virtually none", note: "Trace Na, O₂, H₂", icon: "🌫️" },
+      { label: "Day Temp (Sun side)", value: "430°C", icon: "🔥" },
+      { label: "Night Temp (dark side)", value: "-180°C", icon: "❄️" },
+      { label: "Magnetic Field", value: "~1% of Earth's", icon: "🧲" },
+    ],
+    keyContext: [
+      "Mercury has almost NO atmosphere, with just traces of sodium and oxygen captured temporarily from solar wind.",
+      "Despite being closest to the Sun, it's NOT the hottest planet. That's Venus.",
+      "The temperature swing between day and night is over 600°C, which is the largest in the solar system.",
+      "Mercury's low mass means low gravity, which directly affects how easily gases can escape."
+    ],
+    thinkAbout: "Why can't Mercury hold onto an atmosphere? Think about the relationship between gravity, temperature, and gas molecules."
+  },
+&nbsp;
+  venus: {
+    subtitle: "Earth's Evil Twin",
+    overview: "Venus is nearly the same size as Earth but has a radically different atmosphere. A crushing, toxic blanket of CO₂ that makes it the hottest planet in the solar system.",
+    stats: [
+      { label: "Distance from Sun", value: "108.2 million km", note: "1.87× farther than Mercury", icon: "☀️" },
+      { label: "Diameter", value: "12,104 km", note: "95% of Earth", icon: "📏" },
+      { label: "Surface Gravity", value: "8.87 m/s²", note: "91% of Earth", icon: "⬇️" },
+      { label: "Atmosphere Composition", value: "96.5% CO₂, 3.5% N₂", icon: "🌫️" },
+      { label: "Atmospheric Pressure", value: "92 atm", note: "92× Earth's surface!", icon: "💨" },
+      { label: "Surface Temperature", value: "465°C average", note: "Hotter than Mercury!", icon: "🔥" },
+      { label: "Day/Night Temp Difference", value: "Almost zero", note: "~5°C variation", icon: "🌡️" },
+      { label: "Mercury's Max Temp", value: "430°C", note: "For comparison", icon: "🪨" },
+    ],
+    keyContext: [
+      "Venus is FARTHER from the Sun than Mercury, yet its surface is 35°C HOTTER.",
+      "Venus's atmosphere is 96.5% carbon dioxide and is a powerful greenhouse gas.",
+      "The atmospheric pressure on Venus is 92× Earth's, like being 900m underwater.",
+      "Day and night temperatures are almost identical on Venus. Something is distributing and trapping heat evenly."
+    ],
+    thinkAbout: "Mercury is closer to the Sun but cooler. Venus has a thick CO₂ atmosphere. What is CO₂ doing to the heat?"
+  },
+&nbsp;
+  earth: {
+    subtitle: "The Blue Marble",
+    overview: "Earth is the only planet with liquid surface water, a breathable atmosphere, and a large Moon that creates significant ocean tides.",
+    stats: [
+      { label: "Distance from Sun", value: "149.6 million km (1 AU)", icon: "☀️" },
+      { label: "Moon Distance", value: "384,400 km", note: "Drifting 3.8cm/yr farther", icon: "🌙" },
+      { label: "Moon Mass", value: "7.3 × 10²² kg", note: "1.2% of Earth", icon: "⚖️" },
+      { label: "Current Tidal Range", value: "~1m open ocean", note: "Up to 16m in bays", icon: "🌊" },
+      { label: "Tidal Force Law", value: "∝ 1/d³", note: "Inverse CUBE, not square", icon: "📐" },
+      { label: "Ocean Coverage", value: "71% of surface", icon: "💧" },
+      { label: "Coastal Population", value: "~40% of humans", note: "Within 100km of coast", icon: "🏙️" },
+    ],
+    keyContext: [
+      "Tidal force follows an INVERSE CUBE law (1/d³), not the regular inverse square law of gravity (1/d²).",
+      "This means tides are MUCH more sensitive to distance changes than regular gravitational pull.",
+      "The Moon is slowly moving away from Earth at 3.8 cm per year, the tides are getting weaker over millions of years.",
+      "About 40% of the world's population lives within 100km of a coastline."
+    ],
+    thinkAbout: "If distance is halved, normal gravity gets 4× stronger (2²). But tidal force uses the CUBE. What's 2³?"
+  },
+&nbsp;
+  mars: {
+    subtitle: "The Red Planet",
+    overview: "Mars is the most Earth-like planet, making it the top candidate for human colonization — but its thin atmosphere and toxic soil present major challenges.",
+    stats: [
+      { label: "Distance from Sun", value: "227.9 million km", icon: "☀️" },
+      { label: "Atmosphere", value: "95% CO₂, 2.7% N₂", icon: "🌫️" },
+      { label: "Atmospheric Pressure", value: "0.6% of Earth's", note: "~6 millibars", icon: "💨" },
+      { label: "Surface Temperature", value: "-60°C average", note: "Range: -140 to 20°C", icon: "🌡️" },
+      { label: "Surface Gravity", value: "3.72 m/s²", note: "38% of Earth", icon: "⬇️" },
+      { label: "Soil (Regolith)", value: "Iron oxide, perchlorates", note: "0.5-1% toxic ClO₄⁻", icon: "🔬" },
+      { label: "Water", value: "Ice at poles &amp; underground", note: "No stable liquid on surface", icon: "💧" },
+      { label: "UV Radiation", value: "~5× Earth's surface", note: "No ozone layer", icon: "☢️" },
+      { label: "Nitrogen in Soil", value: "Almost none", note: "Critical plant nutrient", icon: "🧫" },
+    ],
+    keyContext: [
+      "Mars has an atmosphere, but it's only 0.6% as dense as Earth's — too thin for liquid water to exist on the surface.",
+      "The soil contains perchlorates (ClO₄⁻) at 0.5-1% which istoxic to humans and plants even at low concentrations.",
+      "Mars has no global magnetic field and no ozone layer, so UV radiation hits the surface at lethal levels.",
+      "Water exists as ice at the poles and underground, but the low pressure means it sublimates (ice → gas) rather than melting."
+    ],
+    thinkAbout: "Plants need: nutrients in soil, water, atmospheric pressure, and protection from radiation. Which of these does Mars lack?"
+  },
+&nbsp;
+  jupiter: {
+    subtitle: "King of the Planets",
+    overview: "Jupiter is a gas giant with no solid surface, an incredibly fast rotation, and a storm (the Great Red Spot) that has raged for centuries.",
+    stats: [
+      { label: "Diameter", value: "139,820 km", note: "11× Earth", icon: "📏" },
+      { label: "Mass", value: "1.9 × 10²⁷ kg", note: "318× Earth", icon: "⚖️" },
+      { label: "Rotation Period", value: "9 hr 56 min", note: "Fastest spinning planet", icon: "🔄" },
+      { label: "Surface", value: "None — gas all the way down", note: "Hydrogen &amp; helium", icon: "🌀" },
+      { label: "Great Red Spot Size", value: "~16,000 km wide", note: "Bigger than Earth!", icon: "🔴" },
+      { label: "GRS Age", value: "350+ years observed", note: "Possibly much older", icon: "⏳" },
+      { label: "Heat Output", value: "1.7× solar input", note: "Radiates more than it receives", icon: "🔥" },
+      { label: "Wind Speeds", value: "Up to 620 km/h", icon: "💨" },
+      { label: "Earth Hurricane Lifespan", value: "~1-2 weeks max", note: "For comparison", icon: "🌍" },
+    ],
+    keyContext: [
+      "Jupiter has NO solid surface — there's no land for storms to make landfall and lose energy to friction.",
+      "Jupiter radiates 1.7× more energy than it receives from the Sun, it has a powerful internal heat source.",
+      "A day on Jupiter is only ~10 hours, creating extreme Coriolis forces that stabilize rotating storm systems.",
+      "Earth hurricanes die when they hit land or lose their warm ocean heat source. Jupiter has neither limitation."
+    ],
+    thinkAbout: "On Earth, storms die from landfall friction and losing heat. Jupiter has no land and generates its own heat. What happens to storms?"
+  },
+&nbsp;
+  saturn: {
+    subtitle: "The Ringed Beauty",
+    overview: "Saturn is famous for its spectacular ring system with thousands of ringlets made of ice and rock orbiting within a critical gravitational boundary.",
+    stats: [
+      { label: "Diameter", value: "116,460 km", note: "9.5× Earth", icon: "📏" },
+      { label: "Ring Span", value: "282,000 km wide", note: "But only ~10m thick!", icon: "🪐" },
+      { label: "Ring Composition", value: "~93% water ice, 7% rock", icon: "💎" },
+      { label: "Ring Particle Sizes", value: "Dust to house-sized", icon: "🪨" },
+      { label: "Roche Limit", value: "~2.44 Saturn radii", note: "~147,000 km from center", icon: "⚠️" },
+      { label: "Number of Moons", value: "146+ confirmed", note: "All outside Roche limit", icon: "🌕" },
+      { label: "Ring Mass", value: "~40% of Mimas", note: "Mimas is a small moon", icon: "⚖️" },
+      { label: "Rings Inside Roche Limit?", value: "Yes — entirely", icon: "📐" },
+    ],
+    keyContext: [
+      "ALL of Saturn's rings orbit INSIDE the Roche limit, the distance where tidal forces overpower self-gravity.",
+      "ALL of Saturn's 146+ moons orbit OUTSIDE the Roche limit where self-gravity can hold objects together.",
+      "The Roche limit is where two forces compete: the object's self-gravity (pulling together) vs Saturn's tidal forces (pulling apart).",
+      "The rings are incredibly thin, if Saturn were the size of a football field, the rings would be thinner than a razor blade."
+    ],
+    thinkAbout: "Rings inside a boundary, moons outside it. What is this boundary, and what two forces determine it?"
+  },
+&nbsp;
+  uranus: {
+    subtitle: "The Sideways Planet",
+    overview: "Uranus is an ice giant that rotates on its side, a 98° axial tilt that makes it unique in the solar system. Something catastrophic must have happened.",
+    stats: [
+      { label: "Diameter", value: "50,724 km", note: "4× Earth", icon: "📏" },
+      { label: "Axial Tilt", value: "97.77°", note: "Essentially rolling on its side", icon: "📐" },
+      { label: "Earth's Axial Tilt", value: "23.5°", note: "For comparison", icon: "🌍" },
+      { label: "Rotation Period", value: "17.24 hours", note: "Retrograde (backwards!)", icon: "🔄" },
+      { label: "Magnetic Field Tilt", value: "59° from rotation axis", note: "Very unusual", icon: "🧲" },
+      { label: "Composition", value: "H₂, He, methane ice", note: "Methane gives blue-green color", icon: "🫧" },
+      { label: "Internal Heat", value: "Very low", note: "Unlike Neptune", icon: "🌡️" },
+      { label: "Solar System Age", value: "~4.6 billion years", note: "Chaotic early period", icon: "⏳" },
+    ],
+    keyContext: [
+      "Most planets spin roughly upright (within ~30° tilt). Uranus spins at 98° on its side.",
+      "Its magnetic field is also tilted 59° from the rotation axis, another sign of a violent history.",
+      "The early solar system (first ~500 million years) was chaotic with dozens of protoplanets colliding regularly.",
+      "Angular momentum is CONSERVED. Once an object's spin axis changes, it stays changed unless another force acts on it."
+    ],
+    thinkAbout: "What could knock an entire planet onto its side? And what law of physics explains why it stayed that way?"
+  },
+&nbsp;
+  neptune: {
+    subtitle: "The Windswept World",
+    overview: "Neptune is the farthest planet, receiving very little sunlight. Yet it has the fastest winds in the entire solar system. A thermodynamic paradox.",
+    stats: [
+      { label: "Distance from Sun", value: "4.5 billion km", note: "30× Earth's distance", icon: "☀️" },
+      { label: "Solar Energy Received", value: "1/900th of Earth's", note: "Very dark and cold", icon: "💡" },
+      { label: "Energy Radiated", value: "2.61× solar input", note: "Radiates MORE than it gets!", icon: "📡" },
+      { label: "Wind Speeds", value: "Up to 2,100 km/h", note: "Fastest in solar system", icon: "💨" },
+      { label: "Earth's Max Wind", value: "~400 km/h", note: "Strongest tornado", icon: "🌍" },
+      { label: "Surface", value: "None — gas/ice giant", note: "No solid surface friction", icon: "🌀" },
+      { label: "Internal Temperature", value: "~5,100°C at core", note: "Very hot inside", icon: "🔥" },
+      { label: "Atmosphere", value: "H₂, He, methane", note: "Methane = blue color", icon: "🌫️" },
+    ],
+    keyContext: [
+      "Neptune radiates 2.61× more energy than it receives from the Sun. It has a massive internal heat source.",
+      "This extra energy comes from gravitational contraction (Kelvin-Helmholtz mechanism) and possibly methane compressed into diamonds.",
+      "Neptune has no solid surface, once winds start, there's almost zero friction to slow them down.",
+      "Less solar input means fewer competing weather patterns, the atmosphere can organize into powerful, uniform circulation."
+    ],
+    thinkAbout: "Neptune gets almost no solar energy yet has 2,100 km/h winds. Where is the energy coming from, and why doesn't friction stop it?"
+  }
+};</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2026-04-18T03:50:56.290Z
+            </div>
+        <script src="../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../sorter.js"></script>
+        <script src="../../block-navigation.js"></script>
+    </body>
+</html>
+    

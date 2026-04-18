@@ -1,7 +1,3 @@
-// ============================================================
-// src/chat.js — OpenAI API calls via backend proxy
-// ============================================================
-
 const API_BASE = '/api';
 
 // Send a student question and get the planet teacher's response

@@ -1,14 +1,7 @@
-// ============================================================
-// tests/api.test.js — Test 2: AI API key/generation works
-// Mocks fetch so tests pass without a running server,
-// while still verifying that the right endpoints and payloads
-// are used and that success/failure responses are handled correctly.
-// ============================================================
-
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { sendQuestion, evaluateAnswer } from '../src/chat.js';
 
-// --------------- sendQuestion ---------------
+// user send question tests
 
 describe('Test 2 — AI API: sendQuestion', () => {
   beforeEach(() => vi.stubGlobal('fetch', vi.fn()));
@@ -75,7 +68,7 @@ describe('Test 2 — AI API: sendQuestion', () => {
   });
 });
 
-// --------------- evaluateAnswer ---------------
+// ai takes in an answer and planet info, returns correct + feedback
 
 describe('Test 2 — AI API: evaluateAnswer', () => {
   const mockPlanet = {
@@ -144,7 +137,7 @@ describe('Test 2 — AI API: evaluateAnswer', () => {
   });
 });
 
-// --------------- Health endpoint contract ---------------
+// health endpoint tests to verify API key presence and server health status
 
 describe('Test 2 — AI API: /api/health contract', () => {
   beforeEach(() => vi.stubGlobal('fetch', vi.fn()));
