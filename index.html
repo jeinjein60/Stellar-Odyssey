@@ -132,7 +132,7 @@
         </div>
         <div class="stat-box">
           <span class="stat-label">Lab Tools</span>
-          <span class="stat-value" id="header-unlock-badge" style="color:#a78bfa">🧪 —</span>
+          <span class="stat-value" id="header-unlock-badge" style="color:#45c7ff">🧪 —</span>
         </div>
       </div>
     </header>
@@ -180,17 +180,8 @@
         </div>
       </aside>
 
-      <!-- RIGHT: Chat + Simulation area -->
-      <main class="chat-sim-wrapper">
-        <!-- Simulation Panel (collapsible, right side of chat) -->
-        <div class="sim-panel-wrapper">
-          <div id="sim-panel" class="sim-panel">
-            <!-- Dynamically rendered by main.js -->
-          </div>
-        </div>
-
-        <!-- Chat area -->
-        <div class="chat-area">
+      <!-- CENTER: Chat area -->
+      <div class="chat-area">
         <div class="chat-messages" id="chat-messages">
           <!-- Messages render here -->
         </div>
@@ -216,8 +207,14 @@
             <button id="btn-give-up" class="btn-giveup">Give Up & Move On</button>
           </div>
         </div> <!-- end chat-input-area -->
-        </div> <!-- end chat-area -->
-      </main>
+      </div> <!-- end chat-area -->
+
+      <!-- RIGHT: Lab Tools panel -->
+      <div class="sim-panel-wrapper">
+        <div id="sim-panel" class="sim-panel">
+          <!-- Dynamically rendered by main.js -->
+        </div>
+      </div>
     </div>
   </div>
 
