@@ -1,12 +1,16 @@
-const API_BASE = '/api';
+const AI_PROXY = '/api/ai/openai';
 
-// Send a student question and get the planet teacher's response
 export async function sendQuestion(messages) {
   try {
-    const response = await fetch(`${API_BASE}/chat`, {
+    const response = await fetch(AI_PROXY, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages }),
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages,
+        max_tokens: 300,
+        temperature: 0.7,
+      }),
     });
 
     if (!response.ok) {
@@ -15,7 +19,9 @@ export async function sendQuestion(messages) {
     }
 
     const data = await response.json();
-    return { success: true, reply: data.reply };
+    const reply = data.choices?.[0]?.message?.content;
+    if (!reply) throw new Error('Empty response from AI');
+    return { success: true, reply };
   } catch (err) {
     console.error('Chat API error:', err);
     return {
@@ -26,20 +32,39 @@ export async function sendQuestion(messages) {
   }
 }
 
-// Evaluate the student's final answer/hypothesis
-export async function evaluateAnswer(answer, planet) {
+export async function evaluateAnswer(answer, planet, experiment) {
   try {
-    const response = await fetch(`${API_BASE}/evaluate`, {
+    const response = await fetch(AI_PROXY, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        answer,
-        planet: { name: planet.name, id: planet.id },
-        experiment: {
-          question: planet.experiment.question,
-          keyConcepts: planet.experiment.keyConcepts,
-          acceptableAnswer: planet.experiment.acceptableAnswer,
-        },
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: `You are a science teacher evaluating a student's answer to a lab experiment about ${planet.name}.
+
+The experiment question: "${experiment.question}"
+The key concepts the answer MUST touch on: ${experiment.keyConcepts.join(', ')}
+Acceptable answer summary: "${experiment.acceptableAnswer}"
+
+EVALUATION RULES:
+- The student does NOT need to use exact terminology
+- They need to demonstrate understanding of the CORE concept (at least 2-3 key concepts)
+- Be encouraging regardless of correctness
+- For younger students, be more lenient — the right general idea counts
+- If they mention the right phenomenon but use wrong terms, that's still correct
+
+Respond ONLY with this exact JSON format, no other text:
+{"correct": true, "feedback": "Your 2-3 sentence feedback here"}`,
+          },
+          {
+            role: 'user',
+            content: `Student's answer: "${answer}"`,
+          },
+        ],
+        max_tokens: 200,
+        temperature: 0.3,
       }),
     });
 
@@ -49,12 +74,20 @@ export async function evaluateAnswer(answer, planet) {
     }
 
     const data = await response.json();
+    const text = data.choices?.[0]?.message?.content ?? '';
+    const cleaned = text.replace(/```json|```/g, '').trim();
 
-    return {
-      success: true,
-      correct: data.correct,
-      feedback: data.feedback,
-    };
+    try {
+      const result = JSON.parse(cleaned);
+      return { success: true, correct: result.correct, feedback: result.feedback };
+    } catch {
+      const isCorrect = cleaned.includes('"correct": true') || cleaned.includes('"correct":true');
+      return {
+        success: true,
+        correct: isCorrect,
+        feedback: "Great attempt! I had a little trouble processing my thoughts, but let's keep going.",
+      };
+    }
   } catch (err) {
     console.error('Evaluate API error:', err);
     return {
