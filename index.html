@@ -14,23 +14,53 @@
 
   <!-- ========== TITLE SCREEN ========== -->
   <div id="screen-title" class="screen active">
-    <div class="title-content">
-      <div class="title-rocket">🚀</div>
+    <div class="title-card">
       <h1 class="title-heading">Stellar Odyssey <span class="highlight">Lab</span></h1>
       <p class="title-sub">Travel the solar system. Ask questions. Form hypotheses. Learn real science.</p>
       <div class="title-planets-row">
-        <span class="title-planet" style="--c:#b0b0b0">🪨</span>
-        <span class="title-planet" style="--c:#e8a735">🌋</span>
-        <span class="title-planet" style="--c:#4a90d9">🌍</span>
-        <span class="title-planet" style="--c:#d44a2e">🔴</span>
-        <span class="title-planet" style="--c:#d4915e">🌕</span>
-        <span class="title-planet" style="--c:#e8d282">🪐</span>
-        <span class="title-planet" style="--c:#7de8e8">🫧</span>
-        <span class="title-planet" style="--c:#4466ee">🌑</span>
+        <div class="sun"></div>
+        <div class="title-planet-item">
+          <span class="title-planet" style="--c:#b0b0b0">🪨</span>
+          <span class="title-planet-name">Mercury</span>
+        </div>
+        <div class="title-planet-item">
+          <span class="title-planet" style="--c:#e8a735">🌋</span>
+          <span class="title-planet-name">Venus</span>
+        </div>
+        <div class="title-planet-item">
+          <span class="title-planet" style="--c:#4a90d9">🌍</span>
+          <span class="title-planet-name">Earth</span>
+        </div>
+        <div class="title-planet-item">
+          <span class="title-planet" style="--c:#d44a2e">🔴</span>
+          <span class="title-planet-name">Mars</span>
+        </div>
+        <div class="title-planet-item">
+          <span class="title-planet" style="--c:#d4915e">🌕</span>
+          <span class="title-planet-name">Jupiter</span>
+        </div>
+        <div class="title-planet-item">
+          <span class="title-planet" style="--c:#e8d282">🪐</span>
+          <span class="title-planet-name">Saturn</span>
+        </div>
+        <div class="title-planet-item">
+          <span class="title-planet" style="--c:#7de8e8">🫧</span>
+          <span class="title-planet-name">Uranus</span>
+        </div>
+        <div class="title-planet-item">
+          <span class="title-planet" style="--c:#4466ee">🌑</span>
+          <span class="title-planet-name">Neptune</span>
+        </div>
       </div>
-      <button id="btn-start" class="btn-primary">Begin Mission</button>
-      <p class="title-hint">8 planets · 8 experiments · 1 astronaut</p>
+      <button id="btn-start" class="btn-begin-mission">Begin Mission →</button>
+      <div class="title-stats">
+        <span>8 planets</span>
+        <span class="title-stats-dot">·</span>
+        <span>8 experiments</span>
+      </div>
     </div>
+    <div class="deco-orb deco-orb-left"></div>
+    <div class="deco-orb deco-orb-right"></div>
   </div>
 
   <!-- ========== PLANET INTRO / TRANSITION SCREEN ========== -->
