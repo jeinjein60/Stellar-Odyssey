@@ -458,7 +458,7 @@ html, body {
 /* Game body layout */
 .game-body {
   display: grid;
-  grid-template-columns: 340px 1fr 360px;
+  grid-template-columns: 290px 1fr 310px;
   grid-template-rows: 1fr;
   gap: 16px;
   padding: 12px 20px;
@@ -505,7 +505,7 @@ html, body {
 .teacher-name-tag {
   margin-top: 0.6rem;
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   color: var(--planet-color);
 }
 .teacher-info-card {
@@ -519,17 +519,17 @@ html, body {
 }
 .info-row {}
 .info-label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--text-dim);
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.25rem;
   display: block;
 }
-.info-value { font-size: 1rem; font-weight: 500; }
+.info-value { font-size: 0.9rem; font-weight: 500; }
 .info-question {
-  font-size: 0.95rem;
-  line-height: 1.6;
+  font-size: 0.85rem;
+  line-height: 1.55;
   color: var(--text);
   font-style: italic;
 }
@@ -726,18 +726,18 @@ html, body {
   display: flex;
   align-items: flex-start;
   gap: 0.4rem;
-  font-size: 0.88rem;
-  padding: 0.35rem 0;
+  font-size: 0.75rem;
+  padding: 0.3rem 0;
   border-bottom: 1px solid rgba(100,140,255,0.08);
 }
-.sidebar-stat-icon { font-size: 1rem; flex-shrink: 0; width: 22px; text-align: center; }
+.sidebar-stat-icon { font-size: 0.85rem; flex-shrink: 0; width: 20px; text-align: center; }
 .sidebar-stat-label { color: var(--text-dim); min-width: 0; flex: 1; }
-.sidebar-stat-value { color: var(--text); font-weight: 600; font-family: var(--font-mono); font-size: 0.85rem; text-align: right; }
+.sidebar-stat-value { color: var(--text); font-weight: 600; font-family: var(--font-mono); font-size: 0.72rem; text-align: right; }
 .sidebar-context-item {
-  font-size: 0.85rem;
-  line-height: 1.5;
+  font-size: 0.73rem;
+  line-height: 1.45;
   color: var(--text-dim);
-  padding: 0.4rem 0.6rem;
+  padding: 0.35rem 0.5rem;
   border-left: 2px solid var(--planet-color);
   margin-top: 0.2rem;
 }
@@ -793,10 +793,10 @@ html, body {
 
 /* Chat bubbles */
 .chat-msg {
-  max-width: 80%;
-  padding: 1rem 1.25rem;
-  font-size: 1.05rem;
-  line-height: 1.65;
+  max-width: 75%;
+  padding: 0.75rem 1rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
   animation: msgIn 0.3s ease;
   word-wrap: break-word;
 }
@@ -812,10 +812,10 @@ html, body {
   box-shadow: 0 0 12px rgba(0, 128, 255, 0.08);
 }
 .chat-msg.teacher .msg-sender {
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   font-weight: 600;
   color: var(--planet-color);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
   display: flex;
   align-items: center;
   gap: 0.3rem;
@@ -827,10 +827,10 @@ html, body {
   color: var(--text);
 }
 .chat-msg.student .msg-sender {
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   font-weight: 600;
   color: #a78bfa;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
   text-align: right;
 }
 .chat-msg.system {
@@ -840,7 +840,7 @@ html, body {
   background: rgba(255,167,38,0.08);
   border: 1px solid rgba(255,167,38,0.2);
   color: var(--warning);
-  font-size: 0.92rem;
+  font-size: 0.82rem;
   padding: 0.5rem 1rem;
 }
 
@@ -881,12 +881,12 @@ html, body {
 }
 #chat-input {
   flex: 1;
-  padding: 0.8rem 1.1rem;
+  padding: 0.7rem 1rem;
   background: rgba(4, 14, 33, 0.94);
   border: 1px solid rgba(61, 174, 255, 0.38);
   color: var(--text);
   font-family: var(--font);
-  font-size: 1rem;
+  font-size: 0.92rem;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -1032,9 +1032,9 @@ html, body {
 .sim-empty-msg {
   text-align: center;
   color: var(--text-dim);
-  font-size: 0.95rem;
-  line-height: 1.7;
-  padding: 2rem 0.75rem;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  padding: 2rem 0.5rem;
   opacity: 0.7;
 }
 
@@ -1044,20 +1044,20 @@ html, body {
   gap: 0.4rem;
   margin-bottom: 0.3rem;
 }
-.sim-tool-icon { font-size: 1.3rem; }
-.sim-tool-name { font-size: 0.95rem; font-weight: 600; flex: 1; }
-.sim-tool-desc { font-size: 0.88rem; color: var(--text-dim); line-height: 1.5; margin-bottom: 0.6rem; }
+.sim-tool-icon { font-size: 1.1rem; }
+.sim-tool-name { font-size: 0.82rem; font-weight: 600; flex: 1; }
+.sim-tool-desc { font-size: 0.75rem; color: var(--text-dim); line-height: 1.4; margin-bottom: 0.5rem; }
 .sim-tool-open {
   width: 100%;
-  font-size: 0.85rem;
-  padding: 0.5rem 0.8rem;
+  font-size: 0.78rem;
+  padding: 0.4rem 0.8rem;
 }
 
 /* ---------- Simulation Modal ---------- */
 .sim-modal-card {
-  max-width: 960px;
+  max-width: 640px;
   width: 95%;
-  max-height: 90vh;
+  max-height: 85vh;
   overflow-y: auto;
 }
 .sim-modal-header {
@@ -1066,17 +1066,17 @@ html, body {
   align-items: center;
   margin-bottom: 1rem;
 }
-.sim-modal-header h3 { font-size: 1.4rem; }
-.sim-modal-close { padding: 0.4rem 1rem; font-size: 0.9rem; }
-.sim-modal-body { min-height: 300px; padding: 0.5rem 0; }
+.sim-modal-header h3 { font-size: 1.1rem; }
+.sim-modal-close { padding: 0.3rem 0.8rem; font-size: 0.8rem; }
+.sim-modal-body { min-height: 200px; }
 
 /* ---------- Simulation Widget Styles ---------- */
 .sim-widget h4 {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
 }
 .sim-desc {
-  font-size: 1rem;
+  font-size: 0.82rem;
   color: var(--text-dim);
   margin-bottom: 1rem;
   line-height: 1.5;
@@ -1101,7 +1101,7 @@ html, body {
   margin-bottom: 0.75rem;
 }
 .sim-controls label {
-  font-size: 1rem;
+  font-size: 0.82rem;
   color: var(--text-dim);
 }
 .sim-controls label strong {
@@ -1111,36 +1111,35 @@ html, body {
 .sim-controls input[type="range"] {
   width: 100%;
   accent-color: var(--accent);
-  height: 6px;
 }
 .sim-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1rem;
+  font-size: 0.85rem;
 }
 .sim-result {
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 500;
   transition: color 0.3s;
 }
 .sim-insight {
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   color: #45c7ff;
   background: rgba(61, 174, 255, 0.1);
   border: 1px solid rgba(61, 174, 255, 0.2);
-  padding: 0.8rem 1rem;
-  line-height: 1.6;
-  margin-top: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  line-height: 1.5;
+  margin-top: 0.5rem;
 }
 .sim-btn {
-  padding: 0.65rem 1.6rem;
+  padding: 0.5rem 1.2rem;
   background: linear-gradient(135deg, rgba(20, 174, 255, 0.9), rgba(61, 125, 255, 0.85));
   border: 1px solid rgba(61, 174, 255, 0.45);
   color: #fff;
   font-family: var(--font);
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.1s, filter 0.2s;
@@ -1150,21 +1149,21 @@ html, body {
 .sim-toggle-label {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  font-size: 1rem;
+  gap: 0.5rem;
+  font-size: 0.85rem;
   cursor: pointer;
-  padding: 0.4rem 0;
+  padding: 0.3rem 0;
 }
 .sim-toggle-label input[type="checkbox"] {
   accent-color: var(--accent);
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 
 /* Gravity launcher */
-.grav-planet { font-size: 4rem; }
+.grav-planet { font-size: 2.5rem; }
 .grav-molecule {
-  font-size: 2.2rem;
+  font-size: 1.5rem;
   position: absolute;
   bottom: 50px;
   transition: transform 0.4s ease-in;
@@ -1179,33 +1178,33 @@ html, body {
 .grav-escape-line span { font-size: 0.65rem; color: var(--danger); }
 
 /* Escape velocity chart */
-.ev-chart { display: flex; flex-direction: column; gap: 0.75rem; }
-.ev-row { display: flex; align-items: center; gap: 0.75rem; font-size: 1rem; }
-.ev-label { width: 110px; flex-shrink: 0; }
-.ev-bar-track { flex: 1; height: 20px; background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; }
+.ev-chart { display: flex; flex-direction: column; gap: 0.5rem; }
+.ev-row { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; }
+.ev-label { width: 90px; flex-shrink: 0; }
+.ev-bar-track { flex: 1; height: 16px; background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; }
 .ev-bar-fill { height: 100%; border-radius: 8px; transition: width 0.5s; }
-.ev-val { width: 70px; text-align: right; font-family: var(--font-mono); font-size: 0.9rem; color: var(--text-dim); }
+.ev-val { width: 60px; text-align: right; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); }
 
 /* Solar wind */
-.solar-wind-canvas { flex-direction: row; gap: 3rem; }
-.sw-sun { font-size: 4.5rem; }
-.sw-planet { font-size: 3.5rem; position: relative; }
+.solar-wind-canvas { flex-direction: row; gap: 2rem; }
+.sw-sun { font-size: 3rem; }
+.sw-planet { font-size: 2.5rem; position: relative; }
 .sw-atmo {
   position: absolute;
-  width: 110px; height: 110px;
+  width: 80px; height: 80px;
   border-radius: 50%;
   background: rgba(180,180,180,0.2);
   transition: opacity 0.8s, transform 0.8s;
 }
-.sw-particles { font-size: 1rem; color: var(--warning); }
+.sw-particles { font-size: 0.8rem; color: var(--warning); }
 .sw-particles.active::after { content: "→ → → 💨 → →"; animation: windBlow 1s infinite; }
 @keyframes windBlow { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
 /* Atmosphere / Greenhouse */
-.atmo-canvas { min-height: 200px; }
-.atmo-temp-display { font-size: 1.6rem; margin-bottom: 1rem; }
+.atmo-canvas { min-height: 160px; }
+.atmo-temp-display { font-size: 1.3rem; margin-bottom: 1rem; }
 .atmo-planet-wrap { position: relative; }
-.atmo-surface { font-size: 4.5rem; }
+.atmo-surface { font-size: 3rem; }
 .atmo-layers { position: absolute; inset: -20px; pointer-events: none; }
 .co2-layer {
   position: absolute;
@@ -1216,19 +1215,19 @@ html, body {
 }
 @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
-.greenhouse-canvas { min-height: 180px; gap: 0.75rem; }
-.gh-sun-rays { font-size: 1.6rem; color: var(--warning); }
+.greenhouse-canvas { min-height: 140px; gap: 0.5rem; }
+.gh-sun-rays { font-size: 1.2rem; color: var(--warning); }
 .gh-atmosphere {
-  padding: 0.75rem 1.25rem;
+  padding: 0.5rem 1rem;
   background: rgba(232,167,53,0.15);
   border: 1px dashed rgba(232,167,53,0.4);
   border-radius: 8px;
   text-align: center;
   transition: opacity 0.5s;
 }
-.gh-label { font-size: 1rem; color: var(--text-dim); }
-.gh-surface { font-size: 1.3rem; padding: 0.5rem; }
-.gh-ir-rays { font-size: 1.2rem; transition: color 0.3s; }
+.gh-label { font-size: 0.75rem; color: var(--text-dim); }
+.gh-surface { font-size: 1rem; padding: 0.5rem; }
+.gh-ir-rays { font-size: 0.9rem; transition: color 0.3s; }
 
 /* Comparison cards */
 .compare-grid {
@@ -1247,20 +1246,20 @@ html, body {
   padding: 1rem;
   text-align: center;
 }
-.compare-planet { font-size: 3rem; margin-bottom: 0.3rem; }
-.compare-card h5 { margin-bottom: 0.5rem; font-size: 1.15rem; }
-.compare-stat { font-size: 0.95rem; color: var(--text-dim); margin-bottom: 0.3rem; }
-.compare-verdict { margin-top: 0.5rem; font-weight: 600; font-size: 1rem; color: var(--success); }
-.compare-vs { font-size: 1.8rem; font-weight: 700; color: var(--text-dim); }
+.compare-planet { font-size: 2rem; margin-bottom: 0.3rem; }
+.compare-card h5 { margin-bottom: 0.5rem; font-size: 0.95rem; }
+.compare-stat { font-size: 0.78rem; color: var(--text-dim); margin-bottom: 0.25rem; }
+.compare-verdict { margin-top: 0.5rem; font-weight: 600; font-size: 0.82rem; color: var(--success); }
+.compare-vs { font-size: 1.3rem; font-weight: 700; color: var(--text-dim); }
 
 /* Moon slider */
-.moon-canvas { flex-direction: row; gap: 1.5rem; min-height: 140px; }
-.moon-earth { font-size: 4.5rem; }
-.moon-icon { font-size: 3rem; position: absolute; right: 30%; transition: right 0.3s; }
+.moon-canvas { flex-direction: row; gap: 1rem; min-height: 100px; }
+.moon-earth { font-size: 3rem; }
+.moon-icon { font-size: 2rem; position: absolute; right: 30%; transition: right 0.3s; }
 .moon-tidal-bulge {
   position: absolute;
   left: 50px;
-  width: 70px; height: 70px;
+  width: 50px; height: 50px;
   border-radius: 50%;
   background: rgba(74,144,217,0.2);
   transition: transform 0.3s;
@@ -1268,7 +1267,7 @@ html, body {
 .moon-distance-label {
   position: absolute;
   bottom: 8px;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   color: var(--text-dim);
 }
 
@@ -1276,31 +1275,31 @@ html, body {
 .math-display {
   background: rgba(5, 18, 43, 0.7);
   border: 1px solid rgba(61, 174, 255, 0.28);
-  padding: 1.25rem;
+  padding: 1rem;
   text-align: center;
   margin-bottom: 1rem;
 }
 .math-formula {
-  font-size: 1.7rem;
+  font-size: 1.3rem;
   font-family: var(--font-mono);
   color: var(--accent);
 }
 .math-frac { display: inline-flex; flex-direction: column; text-align: center; vertical-align: middle; }
 .math-frac span:first-child { border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
 .math-interactive { margin-top: 1rem; }
-.math-result { margin-top: 0.5rem; font-size: 1.3rem; }
-.math-work { font-size: 0.95rem; color: var(--text-dim); font-family: var(--font-mono); margin-top: 0.3rem; }
+.math-result { margin-top: 0.5rem; font-size: 1.1rem; }
+.math-work { font-size: 0.8rem; color: var(--text-dim); font-family: var(--font-mono); margin-top: 0.3rem; }
 
 /* Flood visualizer */
 .flood-visual { margin-bottom: 1rem; }
 .flood-scene {
-  height: 180px;
+  height: 120px;
   position: relative;
   background: linear-gradient(to bottom, #1a1a3e 0%, #1a1a3e 50%, #2a4a6e 100%);
   border-radius: 12px;
   overflow: hidden;
 }
-.flood-sky { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-size: 3rem; }
+.flood-sky { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-size: 2rem; }
 .flood-water {
   position: absolute;
   bottom: 0;
@@ -1316,36 +1315,36 @@ html, body {
   padding: 1rem;
   margin-bottom: 0.75rem;
 }
-.plant-icon { font-size: 4.5rem; transition: all 0.3s; }
-.plant-status { font-size: 1.1rem; font-weight: 600; margin-top: 0.5rem; transition: color 0.3s; }
-.plant-toggles { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.5rem; }
+.plant-icon { font-size: 3rem; transition: all 0.3s; }
+.plant-status { font-size: 0.9rem; font-weight: 600; margin-top: 0.5rem; transition: color 0.3s; }
+.plant-toggles { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.5rem; }
 
 /* Soil bars */
-.soil-bar-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
-.soil-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; }
-.soil-item span:first-child { width: 140px; flex-shrink: 0; }
-.soil-bar { flex: 1; height: 18px; background: rgba(255,255,255,0.05); border-radius: 7px; overflow: hidden; }
+.soil-bar-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+.soil-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; }
+.soil-item span:first-child { width: 120px; flex-shrink: 0; }
+.soil-bar { flex: 1; height: 14px; background: rgba(255,255,255,0.05); border-radius: 7px; overflow: hidden; }
 .soil-fill { height: 100%; border-radius: 7px; }
 .soil-item.toxic span:first-child { color: var(--danger); font-weight: 600; }
 
 /* Ring facts */
-.ring-facts, .am-facts { display: flex; flex-direction: column; gap: 0.4rem; margin: 0.75rem 0; }
-.ring-fact { font-size: 1rem; color: var(--text-dim); padding: 0.35rem 0; }
+.ring-facts, .am-facts { display: flex; flex-direction: column; gap: 0.3rem; margin: 0.75rem 0; }
+.ring-fact { font-size: 0.8rem; color: var(--text-dim); padding: 0.3rem 0; }
 
 /* Storm display */
 .storm-display { text-align: center; padding: 0.5rem; margin-bottom: 0.75rem; }
-.storm-icon { font-size: 6rem; transition: font-size 0.3s; }
-.storm-status { font-size: 1.1rem; font-weight: 600; margin-top: 0.3rem; transition: color 0.3s; }
+.storm-icon { font-size: 4rem; transition: font-size 0.3s; }
+.storm-status { font-size: 0.9rem; font-weight: 600; margin-top: 0.3rem; transition: color 0.3s; }
 
 /* Heat engine bars */
-.heat-bars { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.5rem; }
-.heat-bar-row { display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; }
-.heat-bar-row span:first-child { width: 100px; }
+.heat-bars { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.5rem; }
+.heat-bar-row { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; }
+.heat-bar-row span:first-child { width: 80px; }
 
 /* Roche limit */
-.roche-canvas { flex-direction: row; gap: 1.5rem; min-height: 140px; }
-.roche-saturn { font-size: 4.5rem; }
-.roche-moon { font-size: 3rem; transition: all 0.3s; }
+.roche-canvas { flex-direction: row; gap: 1rem; min-height: 100px; }
+.roche-saturn { font-size: 3rem; }
+.roche-moon { font-size: 2rem; transition: all 0.3s; }
 .roche-line {
   position: absolute;
   left: 45%;
