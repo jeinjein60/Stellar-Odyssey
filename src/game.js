@@ -69,7 +69,7 @@ export function enterLab() {
   // Build initial chat messages for display
   return [
     { type: 'teacher', sender: planet.name, text: planet.greeting },
-    { type: 'system', text: `🔬 Lab Question: "${planet.experiment.question}"` },
+    { type: 'system', text: `Lab Question: "${planet.experiment.question}"` },
     { type: 'teacher', sender: planet.name, text: getOpeningPrompt(planet) },
   ];
 }

@@ -1,4 +1,21 @@
-node_modules
+# Environment variables
 .env
-dist
+.env.local
+
+# Virtual environments (if you use one)
+.env/
+
+# Build output
+dist/
+
+# Dependencies
+node_modules/
+
+# OS files
 .DS_Store
+
+# Logs
+*.log
+
+# Coverage
+coverage/

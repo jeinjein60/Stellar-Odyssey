@@ -262,7 +262,7 @@ async function handleSubmitAnswer() {
   ui.disableInput();
   ui.addTypingIndicator();
 
-  const result = await chat.evaluateAnswer(answer, planet);
+  const result = await chat.evaluateAnswer(answer, planet, planet.experiment);
 
   ui.removeTypingIndicator();
 
