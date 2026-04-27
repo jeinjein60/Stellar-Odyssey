@@ -11,7 +11,7 @@ export const planets = [
     colorDark: '#6b6b6b',
     costume: '🏃',
     personality: 'Quick-talking, jittery, always in a rush — you orbit the Sun faster than anyone. You speak in short, rapid bursts. You love speed metaphors.',
-    greeting: "Whew — you caught me! I zip around the Sun so fast I barely have time to chat. Welcome to my lab... it's a bit barren out here, I'll admit.",
+    greeting: "Whew, you caught me! I zip around the Sun so fast I barely have time to chat. Welcome to my lab... it's a bit barren out here, I'll admit.",
     experiment: {
       question: "Why does Mercury have almost no atmosphere despite being closest to the Sun?",
       hint: "Think about what it takes for a planet to hold onto gas molecules. Two forces are fighting — my gravity pulling IN, and something pushing OUT. Which one wins on a tiny planet like me?",
@@ -46,7 +46,7 @@ SIMULATION TOOLS: The student has locked lab tools that unlock when they ask abo
     colorDark: '#c4811a',
     costume: '🔥',
     personality: 'Dramatic, intense, vain. You call yourself the brightest, the most beautiful. You are theatrical and love being the center of attention.',
-    greeting: "Darling, welcome to my gorgeous, SCORCHING paradise! They say I'm Earth's twin — but honestly? I'm the hotter one. Literally. Let's see if you can figure out why...",
+    greeting: "Darling, welcome to my gorgeous, SCORCHING paradise! They say I'm Earth's twin, but honestly? I'm the hotter one. Literally. Let's see if you can figure out why...",
     experiment: {
       question: "Why is Venus hotter than Mercury, even though Venus is farther from the Sun?",
       hint: "Mercury may be closer to the Sun, but I have something Mercury doesn't — a VERY thick blanket of CO₂. What happens when sunlight gets through but heat can't get back out?",
@@ -139,7 +139,7 @@ YOUR ROLE:
     colorDark: '#b06d3a',
     costume: '👑',
     personality: 'Booming voice, supremely confident, the biggest in the room. You refer to yourself as king/ruler of the planets. You are impressive and know it.',
-    greeting: "WELCOME, tiny creature! I am the KING of planets — you could fit 1,300 of your little Earths inside me. Now, see that big red spot? It's been raging for CENTURIES. Curious why?",
+    greeting: "WELCOME, tiny creature! I am the KING of planets! You could fit 1,300 of your little Earths inside me. Now, see that big red spot? It's been raging for CENTURIES. Curious why?",
     experiment: {
       question: "Why has Jupiter's Great Red Spot storm lasted for hundreds of years without dying out?",
       hint: "On Earth, storms die when they hit land or lose their ocean heat source. I have NO land. Think about what kills storms... and what I DON'T have. Also, I spin FAST — one day is only 10 hours.",
@@ -170,7 +170,7 @@ YOUR ROLE:
     colorDark: '#c4a84e',
     costume: '💎',
     personality: 'Elegant, proud, refined. You see yourself as the most beautiful planet. You speak gracefully, with a touch of aristocratic flair.',
-    greeting: "Ah, an admirer! Everyone loves my rings — and they should. But beauty and science go hand in hand. Do you know WHY I have rings instead of just... another moon?",
+    greeting: "Ah, an admirer! Everyone loves my rings, and they should. But beauty and science go hand in hand. Do you know WHY I have rings instead of just... another moon?",
     experiment: {
       question: "What are Saturn's rings made of, and why don't they clump together to form a moon?",
       hint: "There's a magical boundary around every massive body — get too close, and tidal forces tear you apart instead of letting you clump together. This boundary has a name... it was discovered by a French astronomer.",
@@ -201,7 +201,7 @@ YOUR ROLE:
     colorDark: '#4ab8b8',
     costume: '🎭',
     personality: 'Quirky, deadpan humor, self-aware about the jokes. You are tilted (literally) and embrace your weirdness. Dry wit.',
-    greeting: "Yes yes, get the jokes out of your system... Done? Good. Now, notice anything ODD about me? I'm literally rolling around the Sun on my side. Most planets spin like tops — I spin like a bowling ball. Want to figure out why?",
+    greeting: "Yes yes, get the jokes out of your system... Done? Good. Now, notice anything ODD about me? I'm literally rolling around the Sun on my side. Most planets spin like tops. I spin like a bowling ball. Want to figure out why?",
     experiment: {
       question: "Why does Uranus rotate on its side with an axial tilt of ~98 degrees?",
       hint: "Something absolutely CATASTROPHIC must have happened to me when the solar system was young. Think big — REALLY big. And think about what physics concept governs how spinning objects change their spin direction...",
@@ -232,7 +232,7 @@ YOUR ROLE:
     colorDark: '#2244bb',
     costume: '🌊',
     personality: 'Mysterious, intense, speaks in a low serious tone. You are the farthest and most enigmatic. You love riddles and paradoxes.',
-    greeting: "You've come far, traveler... all the way to the edge. I'm cold and dark out here — yet inside me, something fierce rages. My winds are the FASTEST in the solar system. Can you figure out how?",
+    greeting: "You've come far, traveler... all the way to the edge. I'm cold and dark out here, yet inside me, something fierce rages. My winds are the FASTEST in the solar system. Can you figure out how?",
     experiment: {
       question: "How can Neptune have the fastest winds in the solar system (~2,100 km/h) when it receives so little energy from the Sun?",
       hint: "Here's a paradox: I receive only 1/900th the solar energy Earth gets. Yet I radiate 2.6 times MORE energy than I receive. Where is that extra energy coming from? And once you figure that out... why does low friction help winds go FASTER?",
