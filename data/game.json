@@ -1,0 +1,15 @@
+{
+  "game-id": "stellar-odyssey",
+  "title": "Stellar Odyssey Lab",
+  "subject": "Science",
+  "description": "Explore the solar system and learn about STEM concepts through interactive exploration and AI-assisted feedback.",
+  "longDescription": [
+    "Stellar Odyssey Lab is an AI-powered educational game where you play as an astronaut traveling through all 8 planets of the solar system, each one acting as a science teacher with a unique personality and a real STEM experiment to solve.",
+    "Instead of reading textbooks or answering multiple choice questions, you learn by having a live conversation with each planet by asking questions, unlocking hidden lab simulations, and forming your own scientific hypothesis.",
+    "It's designed to make concepts like escape velocity, the greenhouse effect, tidal forces, and thermodynamics feel like discoveries you made yourself, not facts you were told."
+  ],
+  "tags": ["physics", "astronomy", "lab", "ai", "simulation"],
+  "embedHeight": "100vh",
+  "featured": true,
+  "version": "1.0.0"
+}

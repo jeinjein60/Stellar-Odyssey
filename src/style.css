@@ -111,7 +111,7 @@ html, body {
 }
 
 .title-heading {
-  font-size: clamp(42px, 5vw, 76px);
+  font-size: 2;
   font-weight: 800;
   line-height: 1;
   letter-spacing: 0.04em;
@@ -193,7 +193,7 @@ html, body {
   box-shadow: 0 0 22px rgba(63, 165, 255, 0.5);
 }
 .title-planet-name {
-  font-size: 14px;
+  font-size: 12px;
   color: #b7cbef;
   letter-spacing: 0.01em;
 }
@@ -211,7 +211,7 @@ html, body {
   color: #fff;
   font-family: var(--font);
   font-weight: 800;
-  font-size: 1.8rem;
+  font-size: 1.25rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   background: linear-gradient(90deg, rgba(20, 174, 255, 0.9), rgba(125, 55, 255, 0.85));
@@ -252,7 +252,7 @@ html, body {
   padding: 16px 34px;
   color: #c5d9f5;
   background: rgba(10, 22, 52, 0.7);
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 .title-stats-dot { opacity: 0.4; }
 .title-hint { color: var(--text-dim); font-size: 0.85rem; margin-top: 1rem; }
