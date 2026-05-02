@@ -10,7 +10,7 @@ describe('Test 2 — AI API: sendQuestion', () => {
   it('returns { success: true, reply } when server responds ok', async () => {
     fetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ reply: 'Gravity pulls gas molecules back down.' }),
+      json: async () => ({ choices: [{ message: { content: 'Gravity pulls gas molecules back down.' } }] }),
     });
 
     const result = await sendQuestion([{ role: 'user', content: 'What is gravity?' }]);
@@ -18,16 +18,16 @@ describe('Test 2 — AI API: sendQuestion', () => {
     expect(result.reply).toBe('Gravity pulls gas molecules back down.');
   });
 
-  it('calls /api/chat with POST method and JSON content-type', async () => {
+  it('calls /api/ai/openai with POST method and JSON content-type', async () => {
     fetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ reply: 'test reply' }),
+      json: async () => ({ choices: [{ message: { content: 'test reply' } }] }),
     });
 
     const messages = [{ role: 'user', content: 'Hello' }];
     await sendQuestion(messages);
 
-    expect(fetch).toHaveBeenCalledWith('/api/chat', expect.objectContaining({
+    expect(fetch).toHaveBeenCalledWith('/api/ai/openai', expect.objectContaining({
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
     }));
@@ -87,32 +87,37 @@ describe('Test 2 — AI API: evaluateAnswer', () => {
   it('returns { success: true, correct, feedback } when server responds ok', async () => {
     fetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ correct: true, feedback: 'Excellent! You identified the key ideas.' }),
+      json: async () => ({
+        choices: [{ message: { content: '{"correct": true, "feedback": "Excellent! You identified the key ideas."}' } }],
+      }),
     });
 
-    const result = await evaluateAnswer("Low gravity lets gas escape.", mockPlanet);
+    const result = await evaluateAnswer("Low gravity lets gas escape.", mockPlanet, mockPlanet.experiment);
     expect(result.success).toBe(true);
     expect(typeof result.correct).toBe('boolean');
     expect(typeof result.feedback).toBe('string');
   });
 
-  it('calls /api/evaluate with POST and sends answer + planet info', async () => {
+  it('calls /api/ai/openai with POST and embeds answer + planet info in messages', async () => {
     fetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ correct: false, feedback: 'Not quite.' }),
+      json: async () => ({
+        choices: [{ message: { content: '{"correct": false, "feedback": "Not quite."}' } }],
+      }),
     });
 
-    await evaluateAnswer('Some answer', mockPlanet);
+    await evaluateAnswer('Some answer', mockPlanet, mockPlanet.experiment);
 
     const [url, options] = fetch.mock.calls[0];
-    expect(url).toBe('/api/evaluate');
+    expect(url).toBe('/api/ai/openai');
     expect(options.method).toBe('POST');
 
     const body = JSON.parse(options.body);
-    expect(body.answer).toBe('Some answer');
-    expect(body.planet.id).toBe('mercury');
-    expect(body.planet.name).toBe('Mercury');
-    expect(body.experiment.keyConcepts).toEqual(mockPlanet.experiment.keyConcepts);
+    expect(Array.isArray(body.messages)).toBe(true);
+    const systemMsg = body.messages.find(m => m.role === 'system');
+    const userMsg = body.messages.find(m => m.role === 'user');
+    expect(systemMsg.content).toContain('Mercury');
+    expect(userMsg.content).toContain('Some answer');
   });
 
   it('returns { success: false, correct: false } on server error', async () => {
