@@ -99,7 +99,7 @@ function handleEnterLab() {
   // Reset hint button
   const hintBtn = ui.dom.btnHint();
   hintBtn.disabled = false;
-  hintBtn.textContent = '💡 Ask for a Hint';
+  hintBtn.textContent = 'Ask for a Hint';
 }
 
 // --- Send Question ---
@@ -126,7 +126,7 @@ async function handleSendQuestion() {
     newlyUnlocked.forEach(tool => {
       ui.addChatMessage({
         type: 'system',
-        text: `🔓 Lab Tool Unlocked: ${tool.icon} ${tool.name}!`,
+        text: `Lab Tool Unlocked: ${tool.icon} ${tool.name}!`,
       });
     });
     // Re-render the simulation panel
@@ -159,7 +159,7 @@ async function handleSendQuestion() {
     aiUnlocks.forEach(tool => {
       ui.addChatMessage({
         type: 'system',
-        text: `🔓 Lab Tool Unlocked: ${tool.icon} ${tool.name}!`,
+        text: `Lab Tool Unlocked: ${tool.icon} ${tool.name}!`,
       });
     });
     renderSimPanel();
@@ -172,7 +172,7 @@ async function handleSendQuestion() {
   if (!game.canAsk()) {
     ui.addChatMessage({
       type: 'system',
-      text: "⚠️ No questions left! Submit your answer now, or give up to move on.",
+      text: "No questions left! Submit your answer now, or give up to move on.",
     });
     ui.disableInput();
   } else {
@@ -187,7 +187,7 @@ function handleHint() {
   if (hint === null) {
     ui.addChatMessage({
       type: 'system',
-      text: "💡 You've already used your hint for this planet!",
+      text: "You've already used your hint for this planet!",
     });
     return;
   }
@@ -195,7 +195,7 @@ function handleHint() {
   if (hint === false) {
     ui.addChatMessage({
       type: 'system',
-      text: "⚠️ No questions left to spend on a hint!",
+      text: "No questions left to spend on a hint!",
     });
     return;
   }
@@ -205,7 +205,7 @@ function handleHint() {
 
   ui.addChatMessage({
     type: 'system',
-    text: "💡 Hint requested! (cost: 1 question)",
+    text: "Hint requested! (cost: 1 question)",
   });
 
   ui.addChatMessage({
@@ -221,19 +221,19 @@ function handleHint() {
     unlocks.forEach(tool => {
       ui.addChatMessage({
         type: 'system',
-        text: `🔓 Lab Tool Unlocked: ${tool.icon} ${tool.name}!`,
+        text: `Lab Tool Unlocked: ${tool.icon} ${tool.name}!`,
       });
     });
     renderSimPanel();
   }
 
   ui.dom.btnHint().disabled = true;
-  ui.dom.btnHint().textContent = '💡 Hint Used';
+  ui.dom.btnHint().textContent = 'Hint Used';
 
   if (!game.canAsk()) {
     ui.addChatMessage({
       type: 'system',
-      text: "⚠️ No questions left! Submit your answer or give up.",
+      text: "No questions left! Submit your answer or give up.",
     });
     ui.disableInput();
   }
@@ -256,7 +256,7 @@ async function handleSubmitAnswer() {
   ui.addChatMessage({
     type: 'student',
     sender: 'You',
-    text: `📝 My answer: ${answer}`,
+    text: `My answer: ${answer}`,
   });
 
   ui.disableInput();
@@ -287,7 +287,7 @@ function handleGiveUp() {
 
   ui.addChatMessage({
     type: 'system',
-    text: "🏳️ No worries — here's what you were looking for:",
+    text: "No worries — here's what you were looking for:",
   });
   ui.addChatMessage({
     type: 'teacher',
@@ -342,14 +342,14 @@ function renderSimPanel() {
   if (unlocked === 0) {
     html += `
       <div class="sim-header">
-        <h3>🧪 Lab Tools</h3>
+        <h3>Lab Tools</h3>
       </div>
       <p class="sim-empty-msg">No tools discovered yet.<br/>Ask the right questions to uncover hidden experiments!</p>
     `;
   } else {
     html += `
       <div class="sim-header">
-        <h3>🧪 Lab Tools</h3>
+        <h3>Lab Tools</h3>
         <span class="sim-unlock-count">${unlocked} discovered</span>
       </div>
     `;

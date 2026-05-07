@@ -129,9 +129,9 @@ export function renderTransition(planet, attempts) {
       dom.transGreeting().textContent = `"${planet.greeting}"`;
 
       // Meta badges
-      dom.transTopic().textContent = `🔬 ${planet.experiment.stemTopic}`;
-      dom.transDifficulty().textContent = `⚡ Difficulty ${planet.experiment.difficulty}/8`;
-      dom.transAttempts().textContent = `❓ ${attempts} questions`;
+      dom.transTopic().textContent = `${planet.experiment.stemTopic}`;
+      dom.transDifficulty().textContent = `Difficulty ${planet.experiment.difficulty}/8`;
+      dom.transAttempts().textContent = `${attempts} questions`;
 
       // Pre-render briefing content
       renderBriefing(planet);
@@ -384,10 +384,10 @@ export function showResultModal(correct, feedback, planet, isLast) {
   dom.resultTitle().textContent = correct ? 'Correct!' : 'Not Quite!';
   dom.resultFeedback().textContent = feedback;
   dom.resultMeta().textContent = correct
-    ? '🎉 +1 question attempt on the next planet!'
-    : '📉 -1 question attempt on the next planet.';
+    ? '+1 question attempt on the next planet!'
+    : '-1 question attempt on the next planet.';
 
-  dom.btnNextPlanet().textContent = isLast ? 'See Results 🏆' : 'Next Planet →';
+  dom.btnNextPlanet().textContent = isLast ? 'See Results' : 'Next Planet →';
   dom.modalResult().classList.remove('hidden');
 }
 
