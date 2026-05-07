@@ -255,6 +255,102 @@
     </div>
   </div>
 
+  <!-- ========== TUTORIAL MODAL ========== -->
+  <div id="modal-tutorial" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="tutorial-card">
+
+      <!-- Phase 1: Travel animation -->
+      <div id="tutorial-travel" class="tutorial-travel">
+        <div class="rocket-fly">🚀</div>
+        <p class="travelling-text">
+          Travelling to <span style="color:#FFD700">The Sun</span>
+          <span class="tutorial-badge">Tutorial</span>...
+        </p>
+      </div>
+
+      <!-- Phase 2: Tutorial interface -->
+      <div id="tutorial-interface" class="tutorial-interface hidden">
+
+        <div class="tutorial-header">
+          <div class="tutorial-sun-avatar">☀️</div>
+          <div class="tutorial-title-area">
+            <h3>Tutorial: The Sun</h3>
+            <p class="tutorial-subtitle">Learn how the game works before your real mission!</p>
+          </div>
+          <button id="tutorial-btn-skip" class="btn-secondary tutorial-skip-btn">Skip →</button>
+        </div>
+
+        <div class="tutorial-question-box">
+          <span class="tutorial-q-label">📋 Tutorial Question</span>
+          <p>Why is the Sun a star and not a planet?</p>
+        </div>
+
+        <div class="tutorial-win-condition">
+          <strong>🎯 Winning Condition:</strong> Submit an answer that explains how all 3 key concepts below relate to why the Sun is a star. Chat with the Sun to learn them!
+        </div>
+
+        <div class="tutorial-concepts-row">
+          <span class="tutorial-concepts-label">🔬 Key Concept Labs:</span>
+          <button class="tutorial-lab-btn" data-lab="0">⚛️ Nuclear Fusion</button>
+          <button class="tutorial-lab-btn" data-lab="1">🌀 Gravity</button>
+          <button class="tutorial-lab-btn" data-lab="2">💡 Light &amp; Heat</button>
+        </div>
+
+        <div class="tutorial-chat-area">
+          <div class="tutorial-chat-messages" id="tutorial-chat-messages"></div>
+          <div class="tutorial-input-row">
+            <div class="astronaut-icon">👨‍🚀</div>
+            <input type="text" id="tutorial-chat-input" placeholder="Ask the Sun a question..." autocomplete="off" />
+            <button id="tutorial-btn-send" class="btn-send">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="tutorial-footer">
+          <button id="tutorial-btn-submit" class="btn-answer">Submit My Answer 🚀</button>
+          <button id="tutorial-btn-start-mission" class="btn-primary hidden">Start Your Real Mission! →</button>
+        </div>
+
+      </div><!-- end tutorial-interface -->
+    </div><!-- end tutorial-card -->
+  </div>
+
+  <!-- ========== TUTORIAL LAB PLACEHOLDER MODAL ========== -->
+  <div id="modal-tutorial-lab" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+      <h3 id="tutorial-lab-title">Nuclear Fusion Lab</h3>
+      <p id="tutorial-lab-desc" class="tutorial-lab-desc-text"></p>
+      <div class="tutorial-lab-placeholder">
+        <span style="font-size:2.5rem">🚧</span>
+        <p>This lab simulation is coming soon!<br/>Use what you've learned from chatting with the Sun.</p>
+      </div>
+      <div class="modal-actions" style="margin-top:1rem;">
+        <button id="tutorial-lab-close" class="btn-primary">Got it!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== TUTORIAL ANSWER MODAL ========== -->
+  <div id="modal-tutorial-answer" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+      <h3>Submit Your Tutorial Answer</h3>
+      <p class="modal-question">Why is the Sun a star and not a planet?</p>
+      <p class="tutorial-answer-hint">Hint: A complete answer explains all 3 concepts — nuclear fusion, gravity, and light/heat radiation!</p>
+      <textarea id="tutorial-answer-input" rows="4" placeholder="Write your answer here..."></textarea>
+      <div class="modal-actions">
+        <button id="tutorial-btn-cancel-answer" class="btn-secondary">Back to Chat</button>
+        <button id="tutorial-btn-confirm-answer" class="btn-primary">Submit Answer 🚀</button>
+      </div>
+    </div>
+  </div>
+
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>

@@ -52,7 +52,6 @@ EVALUATION RULES:
 - The student does NOT need to use exact terminology
 - They need to demonstrate understanding of the CORE concept (at least 2-3 key concepts)
 - Be encouraging regardless of correctness
-- For younger students, be more lenient — the right general idea counts
 - If they mention the right phenomenon but use wrong terms, that's still correct
 
 Respond ONLY with this exact JSON format, no other text:
