@@ -7,6 +7,7 @@ import * as game from './game.js';
 import * as chat from './chat.js';
 import * as ui from './ui.js';
 import { renderSimulation } from './sim-renderers.js';
+import { initPortalBridge, fetchGameData, saveGameData } from './portalBridge.js';
 
 // ===================== TUTORIAL DATA =====================
 
@@ -95,10 +96,17 @@ const PLANET_CONCEPT_KEYWORDS = {
   ],
 };
 
+// ===================== SAVE HELPER =====================
+
+function persist(extraFields = {}) {
+  saveGameData({ ...game.getSaveData(), ...extraFields });
+}
+
 // ===================== TUTORIAL STATE =====================
 
 let tutorialConceptsDetected = new Set();
 let tutorialChatHistory = [];
+let tutorialCompleted = false;
 
 // ===================== GAME CONCEPT TRACKING STATE =====================
 
@@ -110,9 +118,41 @@ function resetGameConcepts() {
 
 // ===================== INIT =====================
 
-function init() {
+async function init() {
   bindEvents();
-  ui.showScreen('title');
+  initPortalBridge();
+
+  // Attempt to load saved progress from the portal
+  let saved = {};
+  try {
+    saved = await fetchGameData(4000);
+  } catch {
+    // Not inside iframe, no data yet, or portal timed out — start fresh
+  }
+
+  if (saved && typeof saved.currentPlanetIndex === 'number') {
+    // Restore completed-tutorial flag
+    if (saved.tutorialCompleted) tutorialCompleted = true;
+
+    // Restore game state
+    game.restoreState(saved);
+
+    // Resume at the right screen
+    const screen = saved.screen;
+    if (screen === 'end') {
+      ui.renderEndScreen(game.getFinalStats());
+      ui.showScreen('end');
+    } else if (screen === 'game' || screen === 'transition') {
+      const planet = game.currentPlanet();
+      ui.applyPlanetTheme(planet);
+      ui.showScreen('transition');
+      ui.renderTransition(planet, game.state.attempts);
+    } else {
+      ui.showScreen('title');
+    }
+  } else {
+    ui.showScreen('title');
+  }
 }
 
 // ===================== EVENT BINDING =====================
@@ -175,13 +215,18 @@ function bindEvents() {
 
 // ===================== FLOW HANDLERS =====================
 
-// --- Start Game (shows tutorial first) ---
+// --- Start Game (shows tutorial first, skips if already seen) ---
 function handleStart() {
-  openTutorial();
+  if (tutorialCompleted) {
+    startRealGame();
+  } else {
+    openTutorial();
+  }
 }
 
 async function startRealGame() {
   game.startGame();
+  persist({ tutorialCompleted });
   const planet = game.currentPlanet();
   ui.applyPlanetTheme(planet);
   ui.showScreen('transition');
@@ -394,6 +439,7 @@ async function handleSubmitAnswer() {
   ui.removeTypingIndicator();
 
   game.recordResult(result.correct);
+  persist({ tutorialCompleted });
 
   ui.addChatMessage({
     type: 'teacher',
@@ -411,6 +457,7 @@ function handleGiveUp() {
   const planet = game.currentPlanet();
 
   game.recordResult(false);
+  persist({ tutorialCompleted });
 
   ui.addChatMessage({
     type: 'system',
@@ -436,6 +483,7 @@ function handleGiveUp() {
 async function handleNextPlanet() {
   ui.hideResultModal();
   const next = game.advanceToNextPlanet();
+  persist({ tutorialCompleted });
 
   if (next === 'end') {
     const stats = game.getFinalStats();
@@ -452,6 +500,8 @@ async function handleNextPlanet() {
 // --- Restart ---
 function handleRestart() {
   game.resetGame();
+  tutorialCompleted = false;
+  persist({ tutorialCompleted: false });
   ui.showScreen('title');
 }
 
@@ -750,11 +800,13 @@ function evaluateTutorialAnswer(answer) {
 }
 
 function handleTutorialSkip() {
+  tutorialCompleted = true;
   document.getElementById('modal-tutorial').classList.add('hidden');
   startRealGame();
 }
 
 async function handleTutorialComplete() {
+  tutorialCompleted = true;
   document.getElementById('modal-tutorial').classList.add('hidden');
   await startRealGame();
 }

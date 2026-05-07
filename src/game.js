@@ -206,3 +206,29 @@ export function getFinalStats() {
     percentage: Math.round((state.score / planets.length) * 100),
   };
 }
+
+// Return a plain object safe to persist via the portal bridge
+export function getSaveData() {
+  return {
+    currentPlanetIndex: state.currentPlanetIndex,
+    score: state.score,
+    results: state.results,
+    attempts: state.attempts,
+    questionsAsked: state.questionsAsked,
+    hintUsed: state.hintUsed,
+    screen: state.screen,
+  };
+}
+
+// Restore state from a portal save payload
+export function restoreState(saved) {
+  state.currentPlanetIndex = typeof saved.currentPlanetIndex === 'number' ? saved.currentPlanetIndex : 0;
+  state.score             = typeof saved.score === 'number'             ? saved.score             : 0;
+  state.results           = Array.isArray(saved.results)                ? saved.results           : [];
+  state.attempts          = typeof saved.attempts === 'number'          ? saved.attempts          : BASE_ATTEMPTS;
+  state.questionsAsked    = typeof saved.questionsAsked === 'number'    ? saved.questionsAsked    : 0;
+  state.hintUsed          = typeof saved.hintUsed === 'boolean'         ? saved.hintUsed          : false;
+  state.chatHistory       = [];
+  state.screen            = saved.screen ?? 'title';
+  resetAllTools();
+}
