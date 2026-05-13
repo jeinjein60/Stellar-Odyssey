@@ -214,6 +214,30 @@
         <div id="sim-panel" class="sim-panel">
           <!-- Dynamically rendered by main.js -->
         </div>
+
+        <!-- Notes Section -->
+        <div class="notes-section">
+          <div class="notes-header">
+            <span class="notes-title">📝 Mission Notes</span>
+            <span id="notes-save-status" class="notes-save-status"></span>
+          </div>
+          <div class="notes-toolbar">
+            <button class="notes-btn" data-cmd="bold" title="Bold"><b>B</b></button>
+            <button class="notes-btn" data-cmd="italic" title="Italic"><i>I</i></button>
+            <button class="notes-btn" data-cmd="strikeThrough" title="Strikethrough"><s>S</s></button>
+            <span class="notes-sep"></span>
+            <button class="notes-btn" data-cmd="formatBlock" data-val="h1" title="Heading 1">H1</button>
+            <button class="notes-btn" data-cmd="formatBlock" data-val="h2" title="Heading 2">H2</button>
+            <button class="notes-btn" data-cmd="formatBlock" data-val="h3" title="Heading 3">H3</button>
+            <span class="notes-sep"></span>
+            <button class="notes-btn" data-cmd="insertUnorderedList" title="Bullet List">•≡</button>
+            <button class="notes-btn" data-cmd="insertCheckbox" title="Checkbox">☑</button>
+          </div>
+          <div id="notes-editor" class="notes-editor" contenteditable="true"></div>
+          <div class="notes-footer">
+            <button id="btn-save-notes" class="btn-save-notes">Save Notes</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

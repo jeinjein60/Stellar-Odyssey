@@ -11,15 +11,23 @@ function isInsideIframe() {
 }
 
 function postToPortal(type, payload = {}) {
-  if (!isInsideIframe()) return;
+  if (!isInsideIframe()) {
+    console.warn('[PortalBridge] Not inside iframe — message not sent:', type);
+    return;
+  }
+  console.log('[PortalBridge] Sending →', type, payload);
   window.parent.postMessage({ type, payload }, portalOrigin || '*');
 }
 
 function handleMessage(event) {
   const data = event.data;
   if (!data || typeof data !== 'object') return;
-  if (!portalOrigin) portalOrigin = event.origin;
+  if (!portalOrigin) {
+    portalOrigin = event.origin;
+    console.log('[PortalBridge] Portal origin set to:', portalOrigin);
+  }
   if (data.type === 'PORTAL_GAME_DATA_LOADED') {
+    console.log('[PortalBridge] Received PORTAL_GAME_DATA_LOADED:', data.payload);
     const payload = (data.payload && typeof data.payload === 'object') ? data.payload : {};
     loadListeners.forEach(fn => fn(payload));
   }
@@ -27,12 +35,14 @@ function handleMessage(event) {
 
 export function initPortalBridge() {
   window.addEventListener('message', handleMessage);
+  console.log('[PortalBridge] Initialized. In iframe:', isInsideIframe());
 }
 
 export function fetchGameData(timeoutMs = 4000) {
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => {
       loadListeners.delete(onLoaded);
+      console.warn('[PortalBridge] Timed out waiting for PORTAL_GAME_DATA_LOADED');
       reject(new Error('Timed out waiting for portal save data'));
     }, timeoutMs);
 
@@ -48,5 +58,6 @@ export function fetchGameData(timeoutMs = 4000) {
 }
 
 export function saveGameData(data) {
+  console.log('[PortalBridge] Saving →', data);
   postToPortal('PORTAL_GAME_DATA_SAVE', data);
 }

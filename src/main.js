@@ -98,8 +98,18 @@ const PLANET_CONCEPT_KEYWORDS = {
 
 // ===================== SAVE HELPER =====================
 
+function getNotesContent() {
+  const editor = document.getElementById('notes-editor');
+  if (!editor) return '';
+  editor.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    if (cb.checked) { cb.setAttribute('checked', ''); }
+    else { cb.removeAttribute('checked'); }
+  });
+  return editor.innerHTML;
+}
+
 function persist(extraFields = {}) {
-  saveGameData({ ...game.getSaveData(), ...extraFields });
+  saveGameData({ ...game.getSaveData(), notes: getNotesContent(), ...extraFields });
 }
 
 // ===================== TUTORIAL STATE =====================
@@ -133,6 +143,12 @@ async function init() {
   if (saved && typeof saved.currentPlanetIndex === 'number') {
     // Restore completed-tutorial flag
     if (saved.tutorialCompleted) tutorialCompleted = true;
+
+    // Restore notes
+    if (saved.notes && typeof saved.notes === 'string') {
+      const editor = document.getElementById('notes-editor');
+      if (editor) editor.innerHTML = saved.notes;
+    }
 
     // Restore game state
     game.restoreState(saved);
@@ -211,6 +227,9 @@ function bindEvents() {
 
   // Teacher panel tabs
   ui.initTeacherTabs();
+
+  // Notes section
+  initNotes();
 }
 
 // ===================== FLOW HANDLERS =====================
@@ -843,6 +862,39 @@ function checkGameConceptProgress(userMessage) {
 
   container.appendChild(div);
   requestAnimationFrame(() => { container.scrollTop = container.scrollHeight; });
+}
+
+// ===================== NOTES =====================
+
+function initNotes() {
+  const toolbar = document.querySelector('.notes-toolbar');
+  const editor = document.getElementById('notes-editor');
+  const saveBtn = document.getElementById('btn-save-notes');
+  const status = document.getElementById('notes-save-status');
+
+  if (!toolbar || !editor || !saveBtn) return;
+
+  toolbar.addEventListener('mousedown', (e) => {
+    const btn = e.target.closest('.notes-btn');
+    if (!btn) return;
+    e.preventDefault(); // keep editor focused
+
+    const cmd = btn.dataset.cmd;
+    const val = btn.dataset.val || null;
+
+    if (cmd === 'insertCheckbox') {
+      document.execCommand('insertHTML', false, '<input type="checkbox"> ');
+    } else {
+      document.execCommand(cmd, false, val);
+    }
+    editor.focus();
+  });
+
+  saveBtn.addEventListener('click', () => {
+    persist({ tutorialCompleted });
+    status.textContent = '✓ Saved';
+    setTimeout(() => { status.textContent = ''; }, 2000);
+  });
 }
 
 // ===================== BOOT =====================
